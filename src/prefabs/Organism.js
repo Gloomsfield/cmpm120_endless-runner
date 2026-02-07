@@ -4,8 +4,8 @@ class Organism extends Phaser.GameObjects.Sprite {
 
 		game_scene.add.existing(this);
 
-		this.down_view = new OrganismQuad(down_scene, 'organism-down_shader', node_pos, node_radius);
-		this.side_view = new OrganismQuad(side_scene, 'organism-side_shader', node_pos, node_radius);
+		this.down_view = new OrganismQuad(down_scene, node_pos, node_radius);
+		this.side_view = new OrganismQuad(side_scene, node_pos, node_radius);
 
 		this.world_pos = world_pos;
 	}
