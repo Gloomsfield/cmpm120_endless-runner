@@ -1,6 +1,6 @@
-class Organism extends Phaser.GameObject {
+class Organism extends Phaser.GameObjects.Sprite {
 	constructor(game_scene, side_scene, down_scene, nodes, edges, radii) {
-		super('organism');
+		super(game_scene, 0, 0, 'organism', 0);
 
 		game_scene.add.existing(this);
 
@@ -8,8 +8,8 @@ class Organism extends Phaser.GameObject {
 		this.edges = edges;
 		this.radii = radii;
 
-		this.down_view = new OrganismQuad(down_scene);
-		this.side_view = new OrganismQuad(side_scene);
+		this.down_view = new OrganismQuad(down_scene, nodes.length, edges.length);
+		this.side_view = new OrganismQuad(side_scene, nodes.length, edges.length);
 	}
 
 	update() {
