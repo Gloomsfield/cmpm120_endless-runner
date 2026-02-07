@@ -13,7 +13,7 @@ let phaser_config = {
 	height: 480,
 	antialias: false,
 	roundPixels: true,
-	scene: [ Play, Game, DownView, SideView ],
+	scene: [ Load, Play, Game, DownView, SideView ],
 };
 
 let game = new Phaser.Game(phaser_config);

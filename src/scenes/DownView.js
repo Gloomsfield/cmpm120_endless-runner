@@ -1,8 +1,6 @@
 class DownView extends Phaser.Scene {
 	constructor() {
 		super('down-view_scene');
-
-		this.organisms = [];
 	}
 
 	create() {
@@ -10,7 +8,7 @@ class DownView extends Phaser.Scene {
 			tunnel_diameter, 0,
 			phaser_config.width - tunnel_diameter,
 			phaser_config.height
-		);
+		).setBackgroundColor(0xfacade);
 	}
 
 	update() {
