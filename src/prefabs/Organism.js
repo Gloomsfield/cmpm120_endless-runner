@@ -1,28 +1,20 @@
 class Organism extends Phaser.GameObjects.Sprite {
-	constructor(game_scene, side_scene, down_scene, nodes, edges, radii) {
+	constructor(game_scene, side_scene, down_scene, world_pos, node_pos, node_radius) {
 		super(game_scene, 0, 0, 'organism', 0);
 
 		game_scene.add.existing(this);
 
-		this.nodes = nodes;
-		this.edges = edges;
-		this.radii = radii;
+		this.down_view = new OrganismQuad(down_scene, node_pos, node_radius);
+		this.side_view = new OrganismQuad(side_scene, node_pos, node_radius);
 
-		this.down_view = new OrganismQuad(down_scene, nodes.length, edges.length);
-		this.side_view = new OrganismQuad(side_scene, nodes.length, edges.length);
+		this.world_pos = world_pos;
 	}
 
-	update() {
+	update(time) {
+		this.down_view.setPosition(this.world_pos.x, this.world_pos.y);
+		this.side_view.setPosition(this.world_pos.x, this.world_pos.z);
+
 		this.down_view.update();
 		this.side_view.update();
-	}
-
-	alter_position(node_index, new_r, new_theta, new_h) {
-		this.down_view.update_node(node_index, new_r, new_theta, new_h, true);
-		this.side_view.update_node(node_index, new_r, new_theta, new_h, false);
-
-		this.nodes[node_index].r = new_r;
-		this.nodes[node_index].theta = new_theta;
-		this.nodes[node_index].h = new_h;
 	}
 }

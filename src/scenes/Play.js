@@ -4,14 +4,20 @@ class Play extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.glsl({
-			key: 'organism_frag-shader',
-			shaderType: 'fragment',
-			url: './assets/shaders/organism_frag.glsl'
-		});
+		this.load.text('organism_vert-source', 'assets/shaders/organism_vert.glsl');
+		this.load.text('organism_frag-source', 'assets/shaders/organism_frag.glsl');
 	}
 
 	create() {
+		this.cache.shader.add(
+		 	'organism_shader',
+			new Phaser.Display.BaseShader(
+				'organism_shader',
+				this.cache.text.get('organism_frag-source'),
+				this.cache.text.get('organism_vert-source')
+			)
+		);
+
 		this.scene.launch('game_scene');
 	}
 }
