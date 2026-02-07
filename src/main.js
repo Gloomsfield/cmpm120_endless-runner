@@ -7,19 +7,16 @@
 // creative tilt & justification
 // TODO
 
-const VIEWPORT_DIMENSIONS = {
-	width: 640,
-	height: 480
-};
-
 let phaser_config = {
-	type: Phaser.WebGL,
-	width: VIEWPORT_DIMENSIONS.width,
-	height: VIEWPORT_DIMENSIONS.height,
+	type: Phaser.WEBGL,
+	width: 640,
+	height: 480,
 	antialias: false,
 	roundPixels: true,
-	scene: [ ],
+	scene: [ Debug, ],
 };
 
 let game = new Phaser.Game(phaser_config);
+
+let tunnel_diameter = phaser_config.width / 5.0;
 
