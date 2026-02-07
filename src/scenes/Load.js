@@ -13,7 +13,7 @@ class Load extends Phaser.Scene {
 			1.0, 0.0, 0.0, 0.0,
 			0.0, 1.0, 0.0, 0.0,
 			0.0, 0.0, 1.0, 0.0,
-			128.0, 0.0, 0.0, 1.0
+			tunnel_diameter, 0.0, 0.0, 1.0
 		];
 
 		let side_view_matrix = [

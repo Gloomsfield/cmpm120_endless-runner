@@ -18,5 +18,5 @@ let phaser_config = {
 
 let game = new Phaser.Game(phaser_config);
 
-let tunnel_diameter = phaser_config.width / 5.0;
+let tunnel_diameter = phaser_config.width / 4.0;
 
