@@ -1,20 +1,62 @@
 class Organism extends Phaser.GameObjects.Sprite {
-	constructor(game_scene, side_scene, down_scene, world_pos, node_pos, node_radius) {
+	constructor(game_scene, side_scene, down_scene, world_pos, node_info, edge_indices) {
 		super(game_scene, 0, 0, 'organism', 0);
+
+		this.node_info = node_info;
 
 		game_scene.add.existing(this);
 
-		this.down_view = new OrganismQuad(down_scene, node_pos, node_radius);
-		this.side_view = new OrganismQuad(side_scene, node_pos, node_radius);
+		this.edges = [];
+		this.edge_quads = [];
+
+		for(let i = 0; i < edge_indices.length; i += 2) {
+			this.edges.push([this.node_info[i], this.node_info[i + 1]]);
+
+			this.edge_quads.push(new OrganismEdgeQuad(down_scene, [
+				{
+					x: this.node_info[i].x,
+					y: this.node_info[i].y,
+					z: this.node_info[i].z,
+					radius: this.node_info[i].radius
+				},
+				{
+					x: this.node_info[i + 1].x,
+					y: this.node_info[i + 1].y,
+					z: this.node_info[i + 1].z,
+					radius: this.node_info[i + 1].radius
+				}
+			]));
+
+			this.edge_quads.push(new OrganismEdgeQuad(side_scene, [
+				{
+					x: this.node_info[i].x,
+					y: this.node_info[i].z,
+					z: this.node_info[i].y,
+					radius: this.node_info[i].radius
+				},
+				{
+					x: this.node_info[i + 1].x,
+					y: this.node_info[i + 1].z,
+					z: this.node_info[i + 1].y,
+					radius: this.node_info[i + 1].radius
+				}
+			]));
+		}
 
 		this.world_pos = world_pos;
 	}
 
-	update(time) {
-		// this.down_view.setPosition(this.world_pos.x, this.world_pos.y);
-		// this.side_view.setPosition(this.world_pos.x, this.world_pos.z);
+	move_node(node_index, delta_x, delta_y, delta_z) {
+		this.node_info[node_index].x[0] += delta_x;
+		this.node_info[node_index].y[0] += delta_y;
+		this.node_info[node_index].z[0] += delta_z;
+	}
 
-		this.down_view.update();
-		this.side_view.update();
+	update(time) {
+		for(let edge_quad of this.edge_quads) {
+			edge_quad.update();
+		}
+
+		this.move_node(1, Math.sin(time / 300.0), Math.sin(time / 300.0), 0.0);
 	}
 }

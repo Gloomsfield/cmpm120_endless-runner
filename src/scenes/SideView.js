@@ -2,7 +2,7 @@ class SideView extends Phaser.Scene {
 	constructor() {
 		super('side-view_scene');
 
-		this.organism_shader_key = 'organism-side_shader';
+		this.organism_edge_shader_key = 'organism-side_edge_shader';
 	}
 
 	create() {

@@ -2,7 +2,7 @@ class DownView extends Phaser.Scene {
 	constructor() {
 		super('down-view_scene');
 
-		this.organism_shader_key = 'organism-down_shader';
+		this.organism_edge_shader_key = 'organism-down_edge_shader';
 	}
 
 	create() {
