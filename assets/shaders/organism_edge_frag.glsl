@@ -31,21 +31,21 @@ float get_color(vec3 a, vec3 b, vec2 c, float r_a, float r_b) {
 
 	if(d < smoothed_radius) {
 		//return (2.0 * (1.125 - d * 7.5) * (smoothed_z / 5.0));
-		return d;
+		return 1.0;
 	}
 
 	return 0.0;
 }
 
 void main() {
-	vec3 scaled_a_pos = a_pos / uResolution.x;
-	vec3 scaled_b_pos = b_pos / uResolution.x;
+	vec3 scaled_a_pos = a_pos;
+	vec3 scaled_b_pos = b_pos;
 
-	float scaled_a_radius = a_radius / uResolution.x;
-	float scaled_b_radius = b_radius / uResolution.x;
+	float scaled_a_radius = a_radius;
+	float scaled_b_radius = b_radius;
 
 	float color = get_color(scaled_a_pos, scaled_b_pos, frag_uv, scaled_a_radius, scaled_b_radius);
 
-	gl_FragColor = vec4(color, color, scaled_a_pos.x, color);
+	gl_FragColor = vec4(frag_uv.x, frag_uv.y, 1.0, color);
 }
 

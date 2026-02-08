@@ -57,6 +57,6 @@ class Organism extends Phaser.GameObjects.Sprite {
 			edge_quad.update();
 		}
 
-		this.move_node(1, Math.sin(time / 300.0), Math.sin(time / 300.0), 0.0);
+		this.move_node(1, 0.0, Math.sin(time / 500.0), 0.0);
 	}
 }

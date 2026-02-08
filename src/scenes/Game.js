@@ -13,8 +13,8 @@ class Game extends Phaser.Scene {
 			this.scene.get('down-view_scene'),
 			{ x: 0.0, y: 0.0 },
 			[
-				{ x: [ 100.0 ], y: [ 10.0 ], z: [ 10.0 ], radius: [ 5.0 ] },
-				{ x: [ 0.0 ], y: [ 0.0 ], z: [ 0.0 ], radius: [ 7.5 ] }
+				{ x: [ 0.0 ], y: [ 0.0 ], z: [ 0.0 ], radius: [ 1.0 ] },
+				{ x: [ 0.0 ], y: [ 0.0 ], z: [ 0.0 ], radius: [ 1.0 ] }
 			],
 			[ 0, 1 ]
 		);
