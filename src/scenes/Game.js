@@ -4,23 +4,31 @@ class Game extends Phaser.Scene {
 	}
 
 	create() {
-		this.scene.launch('side-view_scene');
-		this.scene.launch('down-view_scene');
+		this.scene.launch('scene-3d_scene');
+		let world = this.scene.get('scene-3d_scene');
 
-		this.test_organism = new Organism(
-			this,
-			this.scene.get('side-view_scene'),
-			this.scene.get('down-view_scene'),
-			{ x: 0.0, y: 0.0 },
-			[
-				{ x: [ 0.0 ], y: [ 0.0 ], z: [ 0.0 ], radius: [ 1.0 ] },
-				{ x: [ 0.0 ], y: [ 0.0 ], z: [ 0.0 ], radius: [ 1.0 ] }
-			],
-			[ 0, 1 ]
-		);
+		world.add_camera({
+			camera_index: 0,
+			target_index: 0,
+			position: { x: 0, y: 0, z: 0 },
+			look: { x: 0, y: 0, z: 1 },
+			up: { x: 0, y: 1, z: 0 },
+			right: { x: 1, y: 0, z: 0 },
+		});
+
+		this.left_view = world.add_render_target({ x: 0, y: 0, width: 320, height: 480 });
+		this.down_view = world.add_render_target({ x: 320, y: 0, width: 320, height: 480 });
+
+		world.link_render_target(0, 0);
+		world.link_render_target(0, 1);
+
+		let orb_handle = world.add_geometry({
+			type: 'debug-orb',
+			radius: 10.0,
+		});
 	}
 
 	update(time) {
-		this.test_organism.update(time);
+
 	}
 }

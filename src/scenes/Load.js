@@ -4,49 +4,28 @@ class Load extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.text('organism_edge_vert-source', 'assets/shaders/organism_edge_vert.glsl');
-		this.load.text('organism_edge_frag-source', 'assets/shaders/organism_edge_frag.glsl');
+		game.renderer.pipelines.add('debug-orb_pipeline', new DebugOrbPipeline());
 
-		this.load.once('complete', () => {
-			this.scene.start('play_scene');
-		});
+		this.load.text('debug-orb_vert-source', 'assets/shaders/debug-orb_vert.glsl');
+		this.load.text('debug-orb_frag-source', 'assets/shaders/debug-orb_frag.glsl');
 
-		let down_view_matrix = [
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			tunnel_diameter, 0.0, 0.0, 1.0
-		];
-
-		let side_view_matrix = [
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0
-		];
+		this.load.image('car', 'assets/car.jpg');
 
 		this.load.once('complete', () => {
 			this.cache.shader.add(
-			 	'organism-down_edge_shader',
+			 	'debug-orb_shader',
 				new Phaser.Display.BaseShader(
-					'organism-down_edge_shader',
-					this.cache.text.get('organism_edge_frag-source'),
-					this.cache.text.get('organism_edge_vert-source')
-				)
-			);
-
-			this.cache.shader.add(
-			 	'organism-side_edge_shader',
-				new Phaser.Display.BaseShader(
-					'organism-side_edge_shader',
-					this.cache.text.get('organism_edge_frag-source'),
-					this.cache.text.get('organism_edge_vert-source'),
+					'debug-orb_shader',
+					this.cache.text.get('debug-orb_frag-source'),
+					this.cache.text.get('debug-orb_vert-source'),
 					{
-						uViewMatrix: { type: 'mat4', value: side_view_matrix },
+						projection_matrix: { type: 'mat4', value: camera_projection_matrix },
+						view_matrix: { type: 'mat4', value: [] }
 					}
 				)
 			);
 
+			this.scene.start('game_scene');
 		});
 	}
 }
