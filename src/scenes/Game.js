@@ -11,7 +11,7 @@ class Game extends Phaser.Scene {
 			camera_index: 0,
 			target_index: 0,
 			position: { x: 0, y: 0, z: 0 },
-			look: { x: 0, y: 0, z: 1 },
+			look: { x: 0, y: 0, z: -1 },
 			up: { x: 0, y: 1, z: 0 },
 			right: { x: 1, y: 0, z: 0 },
 		});
@@ -20,13 +20,10 @@ class Game extends Phaser.Scene {
 
 		this.world.link_render_target(0, 0);
 
-		let orb_handle = this.world.add_geometry({
-			type: 'debug-orb',
-			radius: 10.0,
-		});
+		let eye_handle = this.world.add_3d(PlayerEye, { translation: new Phaser.Math.Vector3(0.0, 0.0, 10.0), rotation: new Phaser.Math.Quaternion().identity() });
 	}
 
 	update(time, delta) {
-		this.world.rotate_camera(0, delta / 1000.0, new Phaser.Math.Vector3(0.0, 1.0, 0.0));
+		// this.world.rotate_camera(0, delta / 1000.0, new Phaser.Math.Vector3(0.0, 1.0, 0.0));
 	}
 }

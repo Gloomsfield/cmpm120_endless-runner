@@ -81,33 +81,16 @@ class Scene3D extends Phaser.Scene {
 		);
 	}
 
-	add_geometry(geometry_config) {
-		if(!VALID_GEOMETRY_TYPES.includes(geometry_config.type)) {
-			return -1;
-		}
-
+	add_3d(object_class, config) {
 		if(this.handle_pool.length <= 0) {
 			return -2;
 		}
 
-		let handle = -3;
+		let new_object = new object_class(this, config);
+		let handle = this.occupy_available_handle(new_object);
 
-		let geometry;
-
-		switch(geometry_config.type) {
-			case 'debug-orb':
-				geometry = new DebugOrb(this, 10.0);
-				handle = this.occupy_available_handle(geometry);
-
-				break;
-			default:
-				break;
-		}
-
-		if(handle > -1) {
-			for(let i = 0; i < this.render_targets.length; i++) {
-				this.render_targets[i].scene.register_renderable(handle, this.pool[handle]);
-			}
+		for(let render_target of this.render_targets) {
+			render_target.scene.register_renderable(handle, this.pool[handle]);
 		}
 
 		return handle;

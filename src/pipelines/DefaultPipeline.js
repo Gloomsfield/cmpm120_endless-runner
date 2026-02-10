@@ -54,6 +54,10 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 					case 'mat4':
 						this.setMatrix4fv(key, false, gameobject[key].val);
 						break;
+					case 'sampler2D':
+						this.setTexture2D(key, gameobject[key]);
+						console.log(gameobject[key]);
+						break;
 				}
 			}
 		}

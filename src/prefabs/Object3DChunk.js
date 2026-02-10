@@ -5,6 +5,7 @@ class Object3DChunk extends Quad {
 		scene.add.existing(this);
 
 		this.quad_offset = { x: 0, y: 0 };
+		this.model_matrix = undefined;
 		this.view_matrix = undefined;
 		this.projection_matrix = undefined;
 	}
