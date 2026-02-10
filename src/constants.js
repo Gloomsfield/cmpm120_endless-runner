@@ -4,11 +4,25 @@ const POOL_SIZE = 100;
 let camera_fov = 60.0 * (Math.PI / 180.0);
 let camera_far = 200.0;
 let camera_near = 1.0;
-let camera_scale = 1.0 / (Math.tan(camera_fov / 2.0));
-let camera_projection_matrix = new Phaser.Math.Matrix4().fromArray([
-	camera_scale, 0.0, 0.0, 0.0,
-	0.0, camera_scale, 0.0, 0.0,
-	0.0, 0.0, -camera_far / (camera_far - camera_near), -1.0,
-	0.0, 0.0, -camera_far * camera_near / (camera_far - camera_near), 0.0
-]);
+
+function default_projection_matrix() {
+	let fov = 60 * (Math.PI / 180);
+	let aspect_ratio = 640.0 / 480.0;
+
+	let f = 200.0;
+	let n = 1.0;
+	let t = Math.tan(fov / 2.0) * n;
+	let b = -t;
+	let l = -t * aspect_ratio;
+	let r = t * aspect_ratio;
+	
+	return new Phaser.Math.Matrix4().fromArray([
+		2.0 * n / (r - l), 0.0, 0.0, 0.0,
+		0.0, 2.0 * n / (t - b), 0.0, 0.0,
+		(r + l) / (r - l), (t + b) / (t - b), -(f + n) / (f - n), -1.0,
+		0.0, 0.0, -2.0 * f * n / (f - n), 0.0
+	]);
+}
+
+let camera_projection_matrix = default_projection_matrix();
 
