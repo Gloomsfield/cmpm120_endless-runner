@@ -9,11 +9,13 @@ class DebugOrbPipeline extends DefaultPipeline {
 				attribute vec2 pos_attribute;
 				attribute vec2 uv_attribute;
 
+				uniform vec2 quad_offset;
+
 				varying vec2 frag_uv;
 
 				void main() {
 					frag_uv = uv_attribute;
-					gl_Position = vec4(pos_attribute, 1.0, 1.0);
+					gl_Position = vec4(pos_attribute + quad_offset, 1.0, 1.0);
 				}
 			`,
 			fragShader: `
@@ -97,6 +99,16 @@ class DebugOrbPipeline extends DefaultPipeline {
 		this.onBatch(gameobject);
 
 		return hasFlushed;
+	}
+
+	onBind(gameobject) {
+		if(gameobject) {
+			this.set2f('quad_offset', gameobject.quad_offset.x, gameobject.quad_offset.y);
+		}
+	}
+
+	onBatch() {
+		this.flush();
 	}
 
 	batchVert(x, y, texture) {

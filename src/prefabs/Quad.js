@@ -27,13 +27,12 @@ let Quad = new Phaser.Class({
 		this.initPipeline(pipeline_key);
 
 		this.pipeline.setTexture2D(this.texture.getWebGLTexture());
-		console.log(this.pipeline.currentBatch);
 	},
 
 	renderWebGL: function(renderer, src, camera, parentMatrix) {
 		camera.addToRenderList(src, camera, parentMatrix);
 
-		let pipeline = renderer.pipelines.set(src.pipeline);
+		let pipeline = renderer.pipelines.set(src.pipeline, src);
 
 		pipeline.batchQuad(
 			this,

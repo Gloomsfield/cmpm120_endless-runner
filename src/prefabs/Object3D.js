@@ -16,7 +16,7 @@ class Object3D extends Phaser.GameObjects.GameObject {
 	}
 
 	determine_radius() {
-		return 1;
+		return 2;
 	}
 
 	update() {

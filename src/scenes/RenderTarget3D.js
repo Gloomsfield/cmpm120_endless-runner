@@ -39,12 +39,13 @@ class RenderTarget3D extends Phaser.Scene {
 			this.renderables.get(handle).renderable.radius = new_radius;
     
 			for(let i = 0; i < this.renderables.get(handle).chunks.length; i++) {
-				this.renderables.get(handle).chunks[i].update_chunk_index_uniform({
-					x: i % (new_radius) - (new_radius / 2),
-					y: Math.floor(i / new_radius) - (new_radius / 2)
+				let x = i % (new_radius) - (new_radius / 2);
+				let y = Math.floor(i / new_radius) - (new_radius / 2);
+
+				this.renderables.get(handle).chunks[i].update_quad_offset_uniform({
+					x: x,
+					y: y
 				});
-    
-				this.renderables.get(handle).chunks[i].update_chunk_radius_uniform(new_radius);
     
 				this.renderables.get(handle).chunks[i].update_view_matrix_uniform(view_matrix);
 				this.renderables.get(handle).chunks[i].update_projection_matrix_uniform(camera_projection_matrix);
@@ -53,6 +54,6 @@ class RenderTarget3D extends Phaser.Scene {
 	}
 
 	update() {
-		console.log(this.children.list.length);
+
 	}
 }
