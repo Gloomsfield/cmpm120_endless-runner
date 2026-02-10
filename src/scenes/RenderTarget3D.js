@@ -53,6 +53,6 @@ class RenderTarget3D extends Phaser.Scene {
 	}
 
 	update() {
-
+		console.log(this.children.list.length);
 	}
 }

@@ -1,4 +1,4 @@
-class DefaultPipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline {
+class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 	constructor(config) {
 		super(config);
 	}

@@ -1,6 +1,6 @@
 class Object3DChunk extends Quad {
 	constructor(scene, pipeline_key) {
-		super(scene, 640, 640, pipeline_key);
+		super(scene, 64, 64, pipeline_key);
 
 		scene.add.existing(this);
 	}
