@@ -16,7 +16,6 @@ class Game extends Phaser.Scene {
 			right: { x: 1, y: 0, z: 0 },
 		});
 
-		//this.left_view = world.add_render_target({ x: 0, y: 0, width: 320, height: 480 });
 		this.down_view = this.world.add_render_target({ x: 0, y: 0, width: 640, height: 480 });
 
 		this.world.link_render_target(0, 0);

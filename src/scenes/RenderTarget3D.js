@@ -39,14 +39,10 @@ class RenderTarget3D extends Phaser.Scene {
 			this.renderables.get(handle).renderable.radius = new_radius;
     
 			for(let i = 0; i < this.renderables.get(handle).chunks.length; i++) {
-				let x = i % (new_radius) - (new_radius / 2);
-				let y = Math.floor(i / new_radius) - (new_radius / 2);
+				let offset_x = i % (new_radius) - (new_radius / 2);
+				let offset_y = Math.floor(i / new_radius) - (new_radius / 2);
 
-				this.renderables.get(handle).chunks[i].set_quad_offset({
-					x: x,
-					y: y
-				});
-    
+				this.renderables.get(handle).chunks[i].set_quad_offset({ x: offset_x, y: offset_y });
 				this.renderables.get(handle).chunks[i].set_view_matrix(view_matrix);
 				this.renderables.get(handle).chunks[i].set_projection_matrix(camera_projection_matrix);
 			}
