@@ -17,6 +17,10 @@ class Object3DChunk extends Quad {
 		this.view_matrix = new_view_matrix;
 	}
 
+	set_model_matrix(new_model_matrix) {
+		this.model_matrix = new_model_matrix;
+	}
+
 	set_quad_offset(new_offset) {
 		this.quad_offset = new_offset;
 	}

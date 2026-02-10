@@ -1,5 +1,5 @@
 class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
-	constructor(pipeline_name, vertex_shader_key, fragment_shader_key, attributes) {
+	constructor(pipeline_name, vertex_shader_key, fragment_shader_key, attributes, uniforms) {
 		let vertex_size = 0;
 		let attribute_array = [];
 
@@ -22,6 +22,41 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 		super(config);
 
 		this.attributes = attributes;
+
+		this.uniforms = {
+			'model_matrix': {
+				type: 'mat4',
+			},
+			'view_matrix': {
+				type: 'mat4',
+			},
+			'projection_matrix': {
+				type: 'mat4',
+			},
+		};
+		Object.assign(this.uniforms, uniforms);
+	}
+
+	onBind(gameobject) {
+		if(gameobject) {
+			for(let [ key, value ] of Object.entries(this.uniforms)) {
+				if(!Object.keys(gameobject).includes(key)) {
+					continue;
+				}
+
+				switch(value.type) {
+					case '1f':
+						this.set1f(key, gameobject[key]);
+						break;
+					case '2f':
+						this.set2f(key, gameobject[key].x, gameobject[key].y);
+						break;
+					case 'mat4':
+						this.setMatrix4fv(key, false, gameobject[key].val);
+						break;
+				}
+			}
+		}
 	}
 
 	batchAttributes(gameobject, attributes, texture) {

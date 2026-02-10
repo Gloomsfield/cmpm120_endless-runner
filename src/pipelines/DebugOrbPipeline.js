@@ -9,20 +9,19 @@ class DebugOrbPipeline extends DefaultPipeline {
 			},
 		};
 
+		let uniforms = {
+			'quad_offset': {
+				type: '2f',
+			},
+		};
+
 		super(
 			'debug-orb_pipeline',
-			'debug-orb_vertex',
+			'default_vertex',
 			'debug-orb_fragment',
-			attributes
+			attributes,
+			uniforms
 		);
-	}
-
-	onBind(gameobject) {
-		if(gameobject) {
-			this.set2f('quad_offset', gameobject.quad_offset.x, gameobject.quad_offset.y);
-			this.setMatrix4fv('view_matrix', false, gameobject.view_matrix.val);
-			this.setMatrix4fv('projection_matrix', false, gameobject.projection_matrix.val);
-		}
 	}
 }
 

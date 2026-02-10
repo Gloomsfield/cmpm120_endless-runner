@@ -45,6 +45,9 @@ class RenderTarget3D extends Phaser.Scene {
 				this.renderables.get(handle).chunks[i].set_quad_offset({ x: offset_x, y: offset_y });
 				this.renderables.get(handle).chunks[i].set_view_matrix(view_matrix);
 				this.renderables.get(handle).chunks[i].set_projection_matrix(camera_projection_matrix);
+
+				// there's a better way to do this
+				this.renderables.get(handle).chunks[i].set_model_matrix(renderable.renderable.model_matrix);
 			}
 		});
 	}

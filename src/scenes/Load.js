@@ -4,7 +4,7 @@ class Load extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.text('debug-orb_vertex', 'assets/shaders/debug-orb_vert.glsl');
+		this.load.text('default_vertex', 'assets/shaders/default_vert.glsl');
 		this.load.text('debug-orb_fragment', 'assets/shaders/debug-orb_frag.glsl');
 
 		this.load.once('complete', () => {
