@@ -34,12 +34,25 @@ let Quad = new Phaser.Class({
 
 		let pipeline = renderer.pipelines.set(src.pipeline, src);
 
-		pipeline.batchQuad(
-			this,
-			-0.5, 0.5,
-			-0.5, -0.5,
-			0.5, -0.5,
-			0.5, 0.5
+		pipeline.batchAttributes(this,
+			{
+				'pos_attribute': [
+					-0.5, 0.5, 10.0,
+					-0.5, -0.5, 10.0,
+					0.5, -0.5, 10.0,
+					-0.5, 0.5, 10.0,
+					0.5, -0.5, 10.0,
+					0.5, 0.5, 10.0,
+				],
+				'uv_attribute': [
+					0.0, 0.0,
+					0.0, 1.0,
+					1.0, 1.0,
+					0.0, 0.0,
+					1.0, 1.0,
+					1.0, 0.0,
+				],
+			}
 		);
 
 		renderer.pipelines.postBatch(src);

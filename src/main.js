@@ -41,3 +41,11 @@ function dot_vector3(a, b) {
 	return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
+function fallback(x, fallback_value) {
+	if(x === undefined || x === null) {
+		return fallback_value;
+	}
+
+	return x;
+}
+
