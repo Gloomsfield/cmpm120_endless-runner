@@ -5,9 +5,9 @@ class Game extends Phaser.Scene {
 
 	create() {
 		this.scene.launch('scene-3d_scene');
-		let world = this.scene.get('scene-3d_scene');
+		this.world = this.scene.get('scene-3d_scene');
 
-		world.add_camera({
+		this.world.add_camera({
 			camera_index: 0,
 			target_index: 0,
 			position: { x: 0, y: 0, z: 0 },
@@ -17,17 +17,17 @@ class Game extends Phaser.Scene {
 		});
 
 		//this.left_view = world.add_render_target({ x: 0, y: 0, width: 320, height: 480 });
-		this.down_view = world.add_render_target({ x: 0, y: 0, width: 640, height: 480 });
+		this.down_view = this.world.add_render_target({ x: 0, y: 0, width: 640, height: 480 });
 
-		world.link_render_target(0, 0);
+		this.world.link_render_target(0, 0);
 
-		let orb_handle = world.add_geometry({
+		let orb_handle = this.world.add_geometry({
 			type: 'debug-orb',
 			radius: 10.0,
 		});
 	}
 
-	update(time) {
-
+	update(time, delta) {
+		this.world.rotate_camera(0, delta / 1000.0, new Phaser.Math.Vector3(0.0, 1.0, 0.0));
 	}
 }

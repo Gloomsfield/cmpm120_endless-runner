@@ -34,17 +34,21 @@ class Scene3D extends Phaser.Scene {
 	//			{ x, y, z }
 	add_camera(config) {
 		let camera = {
-			view_matrix: [
+			view_matrix: new Phaser.Math.Matrix4().fromArray([
 				config.right.x, config.right.y, config.right.z, 0.0,
 				config.up.x, config.up.y, config.up.z, 0.0,
 				config.look.x, config.look.y, config.look.z, 0.0,
 				config.position.x, config.position.y, config.position.z, 1.0
-			],
+			]),
 			render_target: config.target_index,
 			depth_sorted_object_handles: Array(POOL_SIZE),
 		};
 
 		this.cameras_3d.push(camera);
+	}
+
+	rotate_camera(camera_index, angle, axis) {
+		this.cameras_3d[camera_index].view_matrix.rotate(angle, axis);
 	}
 
 	add_render_target(config) {
@@ -109,7 +113,7 @@ class Scene3D extends Phaser.Scene {
 		return handle;
 	}
 
-	update(time, delta) {
+	update() {
 		for(let i = 0; i < this.render_targets.length; i++) {
 			this.render_targets[i].scene.render_scene(
 				this.cameras_3d[this.render_targets[i].camera_index].view_matrix

@@ -6,16 +6,11 @@ class Object3D extends Phaser.GameObjects.GameObject {
 
 		this.pipeline_key = pipeline_key;
 
-		this.uniforms = {};
-		this.uniforms.view_matrix = { type: 'mat4' };
-
-		let uniforms_deep_copy = structuredClone(uniforms);
-		Object.assign(this.uniforms, uniforms_deep_copy);
-
 		this.radius = 0;
 	}
 
 	determine_radius() {
+		console.error('Object3D determine_radius not overloaded!');
 		return 2;
 	}
 

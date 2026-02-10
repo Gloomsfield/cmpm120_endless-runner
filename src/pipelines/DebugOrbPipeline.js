@@ -6,16 +6,18 @@ class DebugOrbPipeline extends DefaultPipeline {
 			vertShader: `
 				precision mediump float;
 
-				attribute vec2 pos_attribute;
+				attribute vec3 pos_attribute;
 				attribute vec2 uv_attribute;
 
+				uniform mat4 view_matrix;
+				uniform mat4 projection_matrix;
 				uniform vec2 quad_offset;
 
 				varying vec2 frag_uv;
 
 				void main() {
 					frag_uv = uv_attribute;
-					gl_Position = vec4(pos_attribute + quad_offset, 1.0, 1.0);
+					gl_Position = projection_matrix * view_matrix * vec4(pos_attribute, 1.0);
 				}
 			`,
 			fragShader: `
@@ -27,12 +29,12 @@ class DebugOrbPipeline extends DefaultPipeline {
 					gl_FragColor = vec4(frag_uv.x, frag_uv.y, 1.0, 1.0);
 				}
 			`,
-			vertexSize: 4,
-			batchSize: 12,
+			vertexSize: 5,
+			batchSize: 15,
 			attributes: [
 				{
 					name: 'pos_attribute',
-					size: 2
+					size: 3
 				},
 				{
 					name: 'uv_attribute',
@@ -64,31 +66,37 @@ class DebugOrbPipeline extends DefaultPipeline {
 
 		vertex_view_f32[++vertex_index] = x0;
 		vertex_view_f32[++vertex_index] = y0;
+		vertex_view_f32[++vertex_index] = 10;
 		vertex_view_f32[++vertex_index] = 0;
 		vertex_view_f32[++vertex_index] = 0;
 
 		vertex_view_f32[++vertex_index] = x1;
 		vertex_view_f32[++vertex_index] = y1;
+		vertex_view_f32[++vertex_index] = 10;
 		vertex_view_f32[++vertex_index] = 0;
 		vertex_view_f32[++vertex_index] = 1;
 
 		vertex_view_f32[++vertex_index] = x2;
 		vertex_view_f32[++vertex_index] = y2;
+		vertex_view_f32[++vertex_index] = 10;
 		vertex_view_f32[++vertex_index] = 1;
 		vertex_view_f32[++vertex_index] = 0;
 
 		vertex_view_f32[++vertex_index] = x0;
 		vertex_view_f32[++vertex_index] = y0;
+		vertex_view_f32[++vertex_index] = 10;
 		vertex_view_f32[++vertex_index] = 0;
 		vertex_view_f32[++vertex_index] = 0;
 
 		vertex_view_f32[++vertex_index] = x2;
 		vertex_view_f32[++vertex_index] = y2;
+		vertex_view_f32[++vertex_index] = 10;
 		vertex_view_f32[++vertex_index] = 1;
 		vertex_view_f32[++vertex_index] = 0;
 
 		vertex_view_f32[++vertex_index] = x3;
 		vertex_view_f32[++vertex_index] = y3;
+		vertex_view_f32[++vertex_index] = 10;
 		vertex_view_f32[++vertex_index] = 1;
 		vertex_view_f32[++vertex_index] = 1;
 
@@ -104,6 +112,8 @@ class DebugOrbPipeline extends DefaultPipeline {
 	onBind(gameobject) {
 		if(gameobject) {
 			this.set2f('quad_offset', gameobject.quad_offset.x, gameobject.quad_offset.y);
+			this.setMatrix4fv('view_matrix', false, gameobject.view_matrix.val);
+			this.setMatrix4fv('projection_matrix', false, gameobject.projection_matrix.val);
 		}
 	}
 
