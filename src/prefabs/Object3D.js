@@ -1,23 +1,23 @@
-class Object3D extends Phaser.GameObjects.GameObject {
+class Object3D extends Renderable {
 	constructor(scene, config) {
 		let pipeline_key = config.pipeline_key;
-		let translation = config.translation;
+		let position = config.position;
 		let rotation = config.rotation;
 
-		super(scene, 'object3d');
+		super(scene, pipeline_key, position, rotation);
 
 		this.scene = scene;
 
 		this.pipeline_key = pipeline_key;
 
-		this.radius = 0;
-
-		this.translation = translation;
+		this.position = position;
 		this.rotation = rotation;
 
-		this.model_matrix = new Phaser.Math.Matrix4().fromRotationTranslation(this.rotation, this.translation);
-
 		this.children = [];
+
+		this.renderWebGL = config.shape_renderer;
+
+		scene.add.existing(this);
 	}
 
 	add_child(child_class, config) {
@@ -54,6 +54,7 @@ class Object3D extends Phaser.GameObjects.GameObject {
 	}
 
 	update() {
-		this.model_matrix.fromRotationTranslation(this.rotation, this.translation);
+		// this.model_matrix.fromRotationTranslation(this.rotation, this.position);
 	}
 }
+

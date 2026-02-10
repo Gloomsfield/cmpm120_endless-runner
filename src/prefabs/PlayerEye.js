@@ -3,13 +3,14 @@ class PlayerEye extends Object3D {
 		super(
 			scene,
 			{
+				shape_renderer: render_quad,
 				pipeline_key: 'eye_pipeline',
-				translation: config.translation,
+				position: config.position,
 				rotation: config.rotation,
 			}
 		);
 
-		this.eye_sampler2D = scene.textures.addDynamicTexture('eye_dynamic', 16, 16).draw('eye_texture').getWebGLTexture();
+		this.eye_sampler2D = scene.textures.get('eye_dynamic').getWebGLTexture();
 	}
 
 	determine_radius() {

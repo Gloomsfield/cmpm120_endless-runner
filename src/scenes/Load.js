@@ -8,9 +8,12 @@ class Load extends Phaser.Scene {
 		this.load.text('debug-orb_fragment', 'assets/shaders/debug-orb_frag.glsl');
 		this.load.text('eye_fragment', 'assets/shaders/eye_frag.glsl');
 
-		this.load.texture('eye_texture', 'assets/eye.png');
+		this.load.image('eye_texture', 'assets/eye.png');
+		this.load.image('car_texture', 'assets/car.jpg');
 
 		this.load.once('complete', () => {
+			this.textures.addDynamicTexture('eye_dynamic', 16, 16).draw('eye_texture');
+
 			game.renderer.pipelines.add('debug-orb_pipeline', new DebugOrbPipeline());
 			game.renderer.pipelines.add('eye_pipeline', new EyePipeline());
 

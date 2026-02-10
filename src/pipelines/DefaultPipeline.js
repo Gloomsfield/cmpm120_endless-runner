@@ -55,8 +55,8 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 						this.setMatrix4fv(key, false, gameobject[key].val);
 						break;
 					case 'sampler2D':
-						this.setTexture2D(key, gameobject[key]);
-						console.log(gameobject[key]);
+						let unit = this.setTexture2D(gameobject[key]);
+						this.set1i(key, unit);
 						break;
 				}
 			}
@@ -87,7 +87,7 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 		}
 
 		
-		if(this.shouldFlush(6)) {
+		if(this.shouldFlush(vertex_count)) {
 			this.flush();
 		}
 
@@ -106,6 +106,7 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 				}
 			}
 		}
+
 		this.vertexCount += vertex_count;
 
 		this.currentBatch.count = (this.vertexCount - this.currentBatch.start);

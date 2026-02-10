@@ -20,7 +20,7 @@ class Game extends Phaser.Scene {
 
 		this.world.link_render_target(0, 0);
 
-		let eye_handle = this.world.add_3d(PlayerEye, { translation: new Phaser.Math.Vector3(0.0, 0.0, 10.0), rotation: new Phaser.Math.Quaternion().identity() });
+		let eye_handle = this.world.add_3d(PlayerEye, { position: new Phaser.Math.Vector3(0.0, 0.0, 10.0), rotation: new Phaser.Math.Quaternion(0.0, 0.0, 0.0, 0.0).identity() });
 	}
 
 	update(time, delta) {

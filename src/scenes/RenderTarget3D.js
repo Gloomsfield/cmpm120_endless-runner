@@ -6,7 +6,7 @@ class RenderTarget3D extends Phaser.Scene {
 	}
 
 	register_renderable(handle, renderable) {
-		this.renderables.set(handle, { renderable: renderable, chunks: [] });
+		this.renderables.set(handle, renderable);
 	}
 
 	unregister_renderable(handle) {
@@ -15,40 +15,10 @@ class RenderTarget3D extends Phaser.Scene {
 
 	render_scene(view_matrix) {
 		this.renderables.forEach((renderable, handle) => {
-			this.renderables.get(handle).renderable.update();
-    
-			let old_radius = renderable.renderable.radius;
-			let new_radius = renderable.renderable.determine_radius();
-    
-			if(new_radius < old_radius) {
-				for(let _ = 0; _ < old_radius * old_radius - new_radius * new_radius; _++) {
-					this.renderables.get(handle).chunks.pop();
-				}
-			} else if(old_radius < new_radius) {
-				for(let _ = 0; _ < new_radius * new_radius - old_radius * old_radius; _++) {
-					this.renderables.get(handle).chunks.push(
-						new Object3DChunk(
-							this,
-							renderable.renderable.pipeline_key,
-							renderable.renderable.uniforms
-						)
-					);
-				}
-			}
-    
-			this.renderables.get(handle).renderable.radius = new_radius;
-    
-			for(let i = 0; i < this.renderables.get(handle).chunks.length; i++) {
-				let offset_x = i % (new_radius) - (new_radius / 2);
-				let offset_y = Math.floor(i / new_radius) - (new_radius / 2);
+			this.renderables.get(handle).update();
 
-				this.renderables.get(handle).chunks[i].set_quad_offset({ x: offset_x, y: offset_y });
-				this.renderables.get(handle).chunks[i].set_view_matrix(view_matrix);
-				this.renderables.get(handle).chunks[i].set_projection_matrix(camera_projection_matrix);
-
-				// there's a better way to do this
-				this.renderables.get(handle).chunks[i].set_model_matrix(renderable.renderable.model_matrix);
-			}
+			this.renderables.get(handle).set_view_matrix(view_matrix);
+			this.renderables.get(handle).set_projection_matrix(camera_projection_matrix);
 		});
 	}
 
