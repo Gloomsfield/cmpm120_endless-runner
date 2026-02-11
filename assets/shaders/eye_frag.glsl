@@ -5,6 +5,8 @@ uniform sampler2D eye_sampler2D;
 varying vec2 frag_uv;
 
 void main() {
-	gl_FragColor = texture2D(eye_sampler2D, frag_uv);
+	vec4 color = texture2D(eye_sampler2D, frag_uv);
+	if(length(color.xyz) < 0.01) { color.a = 0.0; }
+	gl_FragColor = color;
 }
 

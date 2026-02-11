@@ -10,8 +10,12 @@ class Object3D extends Renderable {
 
 		this.pipeline_key = pipeline_key;
 
-		this.position = position;
-		this.rotation = rotation;
+		this.position_v = position;
+		this.rotation_q = rotation;
+
+		this.scale_s = fallback(config.scale, 1.0);
+
+		this.rotation_pivot = fallback(config.rotation_pivot, new Phaser.Math.Vector3(0.0, 0.0, 0.0));
 
 		this.children = [];
 
@@ -20,23 +24,20 @@ class Object3D extends Renderable {
 		scene.add.existing(this);
 	}
 
-	add_child(child_class, config) {
-		this.children.push(new child_class(config));
-	}
+	add_child(child) {
+		// child.translate(this.position_v);
 
-	determine_radius() {
-		console.error('Object3D determine_radius not overloaded!');
-		return 2;
+		this.children.push(child);
 	}
 
 	translate(translation) {
-		this.translation.add(translation);
+		this.position_v.add(translation);
 
 		this.propagate_transformation(translation, 0);
 	}
 
 	rotate(rotation) {
-		this.rotation.multiply(rotation);
+		this.rotation_q.multiply(rotation);
 
 		this.propagate_transformation(0, rotation);
 	}
@@ -54,7 +55,11 @@ class Object3D extends Renderable {
 	}
 
 	update() {
-		// this.model_matrix.fromRotationTranslation(this.rotation, this.position);
+		this.model_matrix.fromRotationTranslation(this.rotation_q, this.position_v);
+
+		for(let child of this.children) {
+			child.update();
+		}
 	}
 }
 

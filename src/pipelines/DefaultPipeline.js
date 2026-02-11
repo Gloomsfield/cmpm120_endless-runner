@@ -21,6 +21,8 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 
 		super(config);
 
+		console.log(this);
+
 		this.attributes = attributes;
 
 		this.uniforms = {
@@ -33,6 +35,12 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 			'projection_matrix': {
 				type: 'mat4',
 			},
+			'rotation_pivot': {
+				type: '3f',
+			},
+			'scale_s': {
+				type: '1f',
+			},
 		};
 		Object.assign(this.uniforms, uniforms);
 	}
@@ -40,7 +48,7 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 	onBind(gameobject) {
 		if(gameobject) {
 			for(let [ key, value ] of Object.entries(this.uniforms)) {
-				if(!Object.keys(gameobject).includes(key)) {
+				if(!(Object.keys(gameobject).includes(key))) {
 					continue;
 				}
 
@@ -50,6 +58,9 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 						break;
 					case '2f':
 						this.set2f(key, gameobject[key].x, gameobject[key].y);
+						break;
+					case '3f':
+						this.set3f(key, gameobject[key].x, gameobject[key].y, gameobject[key].z);
 						break;
 					case 'mat4':
 						this.setMatrix4fv(key, false, gameobject[key].val);

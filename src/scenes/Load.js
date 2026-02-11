@@ -4,9 +4,14 @@ class Load extends Phaser.Scene {
 	}
 
 	preload() {
+		game.renderer.gl.enable(game.renderer.gl.DEPTH_TEST);
+		game.renderer.gl.depthFunc(game.renderer.gl.LESS);
+
 		this.load.text('default_vertex', 'assets/shaders/default_vert.glsl');
+		this.load.text('billboard_vertex', 'assets/shaders/billboard_vert.glsl');
 		this.load.text('debug-orb_fragment', 'assets/shaders/debug-orb_frag.glsl');
 		this.load.text('eye_fragment', 'assets/shaders/eye_frag.glsl');
+		this.load.text('head_fragment', 'assets/shaders/head_frag.glsl');
 
 		this.load.image('eye_texture', 'assets/eye.png');
 		this.load.image('car_texture', 'assets/car.jpg');
@@ -16,6 +21,7 @@ class Load extends Phaser.Scene {
 
 			game.renderer.pipelines.add('debug-orb_pipeline', new DebugOrbPipeline());
 			game.renderer.pipelines.add('eye_pipeline', new EyePipeline());
+			game.renderer.pipelines.add('head_pipeline', new HeadPipeline());
 
 			this.scene.start('game_scene');
 		});

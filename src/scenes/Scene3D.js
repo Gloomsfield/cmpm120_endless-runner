@@ -96,6 +96,16 @@ class Scene3D extends Phaser.Scene {
 		return handle;
 	}
 
+	add_3d_as_child(object_class, config, parent_handle) {
+		let child_handle = this.add_3d(object_class, config);
+		
+		if(child_handle > -1) {
+			this.pool[parent_handle].add_child(this.pool[child_handle]);
+		}
+
+		return child_handle;
+	}
+
 	update() {
 		for(let i = 0; i < this.render_targets.length; i++) {
 			this.render_targets[i].scene.render_scene(

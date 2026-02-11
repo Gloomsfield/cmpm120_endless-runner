@@ -10,6 +10,7 @@ let Renderable = new Phaser.Class({
 		Phaser.GameObjects.Components.Visible,
 		Phaser.GameObjects.Components.GetBounds,
 		Phaser.GameObjects.Components.BlendMode,
+		Phaser.GameObjects.Components.Depth,
 	],
 
 	initialize: function Renderable(scene, pipeline_key, position, rotation) {
