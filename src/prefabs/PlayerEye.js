@@ -7,7 +7,8 @@ class PlayerEye extends Object3D {
 				pipeline_key: 'eye_pipeline',
 				position: config.position,
 				rotation: config.rotation,
-				rotation_pivot: config.rotation_pivot
+				rotation_pivot: config.rotation_pivot,
+				scale: config.scale
 			}
 		);
 

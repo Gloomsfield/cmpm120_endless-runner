@@ -4,8 +4,6 @@ uniform mat4 projection_matrix;
 uniform mat4 view_matrix;
 uniform mat4 model_matrix;
 
-uniform vec3 rotation_pivot;
-
 attribute vec3 pos_attribute;
 attribute vec2 uv_attribute;
 

@@ -20,30 +20,37 @@ class Game extends Phaser.Scene {
 
 		this.world.link_render_target(0, 0);
 
-
-		this.head_handle = this.world.add_3d(
-			PlayerHead,
+		this.head_renderable = this.world.add_3d(
 			{
-				position: new Phaser.Math.Vector3(0.0, 0.0, 2.5),
-				rotation: new Phaser.Math.Quaternion().identity(),
-				radius: 0.25
+				object_class: PlayerHead,
+				config: {
+					position: new Phaser.Math.Vector3(0.0, 0.0, 5.5),
+					rotation: new Phaser.Math.Quaternion().identity(),
+					radius: 0.25,
+				}
 			}
-		);
-
-		this.world.add_3d_as_child(PlayerEye,
+		).add_children([
 			{
-				position: new Phaser.Math.Vector3(0.0, 0.0, 1.95),
-				rotation: new Phaser.Math.Quaternion().identity(),
-				scale: 0.3,
-				rotation_pivot: new Phaser.Math.Vector3(0.0, 0.0, -0.55)
+				child_class: PlayerEye,
+				config: {
+					position: new Phaser.Math.Vector3(0.0, 0.0, 0.5),
+					rotation: new Phaser.Math.Quaternion().identity().rotateY(-0.25),
+					scale: 0.5,
+				},
 			},
-			this.head_handle
-		);
+			{
+				child_class: PlayerEye,
+				config: {
+					position: new Phaser.Math.Vector3(0.0, 0.0, 0.5),
+					rotation: new Phaser.Math.Quaternion().identity().rotateY(0.25),
+					scale: 0.5,
+				},
+			}
+		]);
 	}
 
 	update(time, delta) {
-		this.world.pool[this.head_handle].rotate(new Phaser.Math.Quaternion().identity().rotateY(delta / 1000.0));
-		//this.world.pool[this.head_handle].translate(new Phaser.Math.Vector3(delta / 1000.0 * 1.0, 0.0, 0.0));
-		this.world.pool[this.head_handle].update();
+		this.head_renderable.rotate(new Phaser.Math.Quaternion().identity().rotateY(delta / 1000.0));
+		this.head_renderable.update();
 	}
 }

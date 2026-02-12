@@ -21,13 +21,33 @@ class Object3D extends Renderable {
 
 		this.renderWebGL = config.shape_renderer;
 
+		this.world_pos = new Phaser.Math.Vector3(0.0, 0.0, 0.0);
+
 		scene.add.existing(this);
 	}
 
-	add_child(child) {
-		// child.translate(this.position_v);
+	add_child(config) {
+		config.config.rotation_pivot = config.config.position.negate();
+		config.config.position = new Phaser.Math.Vector3(this.position_v);
+		// config.config.position.add(config.config.rotation_pivot);
+
+		let child = new config.child_class(this.scene, config.config);
+
+		child.rotate(config.config.rotation);
 
 		this.children.push(child);
+
+		this.emit('add-child', child);
+
+		return this;
+	}
+
+	add_children(child_configs) {
+		for(let child_config of child_configs) {
+			this.add_child(child_config);
+		}
+
+		return this;
 	}
 
 	translate(translation) {
@@ -55,7 +75,12 @@ class Object3D extends Renderable {
 	}
 
 	update() {
-		this.model_matrix.fromRotationTranslation(this.rotation_q, this.position_v);
+		let offset_position = this.position_v;
+		//offset_position.subtract(this.rotation_pivot);
+		this.model_matrix.fromRotationTranslation(this.rotation_q, offset_position);
+		this.model_matrix.translate(this.rotation_pivot);
+
+		this.world_pos.setFromMatrixColumn(this.model_matrix, 3);
 
 		for(let child of this.children) {
 			child.update();

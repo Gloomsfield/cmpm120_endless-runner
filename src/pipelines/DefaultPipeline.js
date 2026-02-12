@@ -21,8 +21,6 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 
 		super(config);
 
-		console.log(this);
-
 		this.attributes = attributes;
 
 		this.uniforms = {
@@ -34,9 +32,6 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 			},
 			'projection_matrix': {
 				type: 'mat4',
-			},
-			'rotation_pivot': {
-				type: '3f',
 			},
 			'scale_s': {
 				type: '1f',

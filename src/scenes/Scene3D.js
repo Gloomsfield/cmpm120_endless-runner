@@ -6,19 +6,8 @@ class Scene3D extends Phaser.Scene {
 	constructor() {
 		super('scene-3d_scene');
 
-		// see references [0]
-		this.handle_pool = Array(POOL_SIZE).fill().map((_, i) => i);
-		this.pool = Array(POOL_SIZE);
-
 		this.cameras_3d = [];
 		this.render_targets = [];
-	}
-
-	occupy_available_handle(object) {
-		let handle = this.handle_pool.pop();
-		this.pool[handle] = object;
-
-		return handle;
 	}
 
 	// config
@@ -81,29 +70,24 @@ class Scene3D extends Phaser.Scene {
 		);
 	}
 
-	add_3d(object_class, config) {
-		if(this.handle_pool.length <= 0) {
-			return -2;
-		}
-
-		let new_object = new object_class(this, config);
-		let handle = this.occupy_available_handle(new_object);
+	add_3d(config) {
+		let new_object = new config.object_class(this, config.config);
 
 		for(let render_target of this.render_targets) {
-			render_target.scene.register_renderable(handle, this.pool[handle]);
+			render_target.scene.register_renderable(new_object);
 		}
 
-		return handle;
+		new_object.on('add-child', (child) => { this.add_3d_existing(child); })
+
+		return new_object;
 	}
 
-	add_3d_as_child(object_class, config, parent_handle) {
-		let child_handle = this.add_3d(object_class, config);
-		
-		if(child_handle > -1) {
-			this.pool[parent_handle].add_child(this.pool[child_handle]);
+	add_3d_existing(obj) {
+		for(let render_target of this.render_targets) {
+			render_target.scene.register_renderable(obj);
 		}
 
-		return child_handle;
+		return obj;
 	}
 
 	update() {

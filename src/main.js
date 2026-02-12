@@ -9,8 +9,11 @@
 
 let phaser_config = {
 	type: Phaser.WEBGL,
-	width: 640,
-	height: 480,
+	scale: {
+		width: 4 * 100,
+		height: 3 * 100,
+		zoom: 1.5,
+	},
 	antialias: false,
 	roundPixels: true,
 	scene: [ Load, Game, RenderTarget3D, Scene3D ],
