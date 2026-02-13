@@ -1,40 +1,46 @@
 class Object3D extends Renderable {
 	constructor(scene, config) {
 		let pipeline_key = config.pipeline_key;
-		let position = config.position;
-		let rotation = config.rotation;
 
-		super(scene, pipeline_key, position, rotation);
+		super(scene, pipeline_key);
 
 		this.scene = scene;
 
 		this.pipeline_key = pipeline_key;
 
-		this.position_v = position;
-		this.rotation_q = rotation;
-
-		this.scale_s = fallback(config.scale, 1.0);
-
-		this.rotation_pivot = fallback(config.rotation_pivot, new Phaser.Math.Vector3(0.0, 0.0, 0.0));
-
 		this.children = [];
 
 		this.renderWebGL = config.shape_renderer;
 
-		this.world_pos = new Phaser.Math.Vector3(0.0, 0.0, 0.0);
+		this.local_rotation = new Phaser.Math.Quaternion(config.local_rotation);
+		this.parent_rotation = new Phaser.Math.Quaternion(fallback(
+			config.parent_rotation,
+			new Phaser.Math.Quaternion().identity()
+		));
+		this.global_rotation = new Phaser.Math.Quaternion(this.local_rotation).multiply(this.parent_rotation);
+
+		this.local_position = new Phaser.Math.Vector3(config.local_position);
+		this.parent_position = new Phaser.Math.Vector3(fallback(
+			config.parent_position,
+			new Phaser.Math.Vector3(0.0, 0.0, 0.0)
+		));
+		this.global_position = new Phaser.Math.Vector3(this.local_position).add(this.parent_position);
+
+		this.local_scale = fallback(config.local_scale, 1.0);
+		this.parent_scale = fallback(config.parent_scale, 1.0);
+		this.global_scale = this.local_scale * this.parent_scale;
 
 		scene.add.existing(this);
 	}
 
 	add_child(config) {
-		config.config.rotation_pivot = new Phaser.Math.Vector3(config.config.position);
-		config.config.position = new Phaser.Math.Vector3(this.position_v);
-		config.config.position.subtract(config.config.rotation_pivot);
+		let modified_config = config.config;
 
-		let child = new config.child_class(this.scene, config.config);
+		modified_config.parent_rotation = this.global_rotation;
+		modified_config.parent_position = this.global_position;
+		modified_config.parent_scale = this.global_scale;
 
-		child.rotate(config.config.rotation);
-		child.rotate(this.rotation_q);
+		let child = new config.object_class(this.scene, modified_config);
 
 		this.children.push(child);
 
@@ -51,18 +57,6 @@ class Object3D extends Renderable {
 		return this;
 	}
 
-	translate(translation) {
-		this.position_v.add(translation);
-
-		this.propagate_transformation(translation, 0);
-	}
-
-	rotate(rotation) {
-		this.rotation_q.multiply(rotation).normalize();
-
-		this.propagate_transformation(0, rotation);
-	}
-
 	get_forward_vector() {
 		let forward = new Phaser.Math.Vector3(
 			0.0, 0.0, -1.0
@@ -74,38 +68,29 @@ class Object3D extends Renderable {
 	// see references [2]
 	look_at(look_position) {
 		let forward = this.get_forward_vector();
-		let delta = new Phaser.Math.Vector3(look_position).subtract(this.world_pos);
+		let delta = new Phaser.Math.Vector3(look_position).subtract(this.global_position);
 		
 		let q = align_vector3(forward, delta);
 
-		this.rotation_q = q;
-
-		this.propagate_transformation(0, q);
-	}
-
-	propagate_transformation(translation, rotation) {
-		for(let child of this.children) {
-			if(translation !== 0) {
-				child.translate(translation);
-			}
-
-			if(rotation !== 0) {
-				//child.rotation_q = this.rotation_q;
-			}
-		}
+		this.local_rotation = q;
 	}
 
 	update() {
-		this.model_matrix.fromRotationTranslation(this.rotation_q, this.position_v);
+		this.global_scale = this.parent_scale * this.local_scale;
+		this.global_rotation = new Phaser.Math.Quaternion(this.parent_rotation).multiply(this.local_rotation);
 
-		this.world_pos = new Phaser.Math.Vector3(this.position_v);
-		this.world_pos.add(this.rotation_pivot);
+		let transformed_local_position = new Phaser.Math.Vector3(this.local_position);
+		transformed_local_position.transformQuat(this.global_rotation);
 
-		this.world_pos.transformMat4(this.model_matrix);
+		this.global_position = new Phaser.Math.Vector3(this.parent_position).add(transformed_local_position);
 
-		this.world_pos = new Phaser.Math.Vector3(this.world_pos).subtract(this.rotation_pivot);
+		this.model_matrix = new Phaser.Math.Matrix4().fromRotationTranslation(this.global_rotation, this.global_position);
 
 		for(let child of this.children) {
+			child.parent_position = this.global_position;
+			child.parent_rotation = this.global_rotation;
+			child.parent_scale = this.global_scale;
+
 			child.update();
 		}
 	}

@@ -25,7 +25,7 @@ class RenderTarget3D extends Phaser.Scene {
 
 		for(let renderable of this.renderables) {
 			// does this work when rotating the camera on the x-axis...?
-			let renderable_position = renderable.world_pos;
+			let renderable_position = renderable.global_position;
 			let renderable_flat_position = new Phaser.Math.Vector2(renderable_position.x, renderable_position.z);
 			let view_renderable_dot = dot_vector2(renderable_flat_position, view_flat_position);
 			let view_renderable_angle = Math.acos(view_renderable_dot / renderable_flat_position.length / view_flat_position.length);

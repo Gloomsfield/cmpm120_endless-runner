@@ -54,7 +54,7 @@ function align_vector3(a, b) {
 
 	let ab_quat = new Phaser.Math.Quaternion(a_quat).multiply(b_quat);
 
-	let q_quat_1 = new Phaser.Math.Quaternion(0.0, 0.0, 1.0, 0.0).normalize();
+	let q_quat_1 = new Phaser.Math.Quaternion(0.0, 0.0, -1.0, 0.0).normalize();
 	let q_quat_2 = new Phaser.Math.Quaternion(q_quat_1);
 
 	let bqa_quat = new Phaser.Math.Quaternion(b_quat).multiply(q_quat_2).multiply(a_quat);

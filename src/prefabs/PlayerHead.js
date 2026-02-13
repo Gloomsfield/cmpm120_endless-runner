@@ -1,14 +1,12 @@
 class PlayerHead extends Object3D {
 	constructor(scene, config) {
+		let modified_config = config;
+		modified_config.shape_renderer = render_quad;
+		modified_config.pipeline_key = 'head_pipeline';
+
 		super(
 			scene,
-			{
-				shape_renderer: render_quad,
-				pipeline_key: 'head_pipeline',
-				position: config.position,
-				rotation: config.rotation,
-				rotation_pivot: config.rotation_pivot
-			}
+			modified_config
 		);
 
 		this.radius = config.radius;

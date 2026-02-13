@@ -24,34 +24,34 @@ class Game extends Phaser.Scene {
 			{
 				object_class: PlayerHead,
 				config: {
-					position: new Phaser.Math.Vector3(0.0, 0.0, 5.5),
-					rotation: new Phaser.Math.Quaternion().identity().rotateY(Math.PI),
+					parent_position: new Phaser.Math.Vector3(0.0, 0.0, 2.5),
+					local_rotation: new Phaser.Math.Quaternion().identity(),
 					radius: 0.25,
 				}
 			}
 		).add_children([
 			{
-				child_class: PlayerEye,
+				object_class: PlayerEye,
 				config: {
-					position: new Phaser.Math.Vector3(0.0, 0.0, 0.25),
-					rotation: new Phaser.Math.Quaternion().identity().rotateY(0.2),
-					scale: 0.5,
+					local_position: new Phaser.Math.Vector3(0.0, 0.0, -0.5),
+					local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-0.5),
+					local_scale: 0.5,
 				},
 			},
 			{
-				child_class: PlayerEye,
+				object_class: PlayerEye,
 				config: {
-					position: new Phaser.Math.Vector3(0.0, 0.0, 0.25),
-					rotation: new Phaser.Math.Quaternion().identity().rotateY(-0.2),
-					scale: 0.5,
+					local_position: new Phaser.Math.Vector3(0.0, 0.0, -0.5),
+					local_rotation: new Phaser.Math.Quaternion().identity().rotateY(0.5),
+					local_scale: 0.5,
 				},
 			}
 		]);
 	}
 
 	update(time, delta) {
-		this.head_renderable_1.translate(new Phaser.Math.Vector3(delta / 1000 * Math.sin(time / 1000.0), delta / 1000 * Math.sin(time / 2000.0), 0.0));
-		this.head_renderable_1.look_at(new Phaser.Math.Vector3(0.0, 0.0, 0.0));
+		this.head_renderable_1.parent_position = new Phaser.Math.Vector3(Math.sin(time / 1000.0), 0.0, 5.0);
+		this.head_renderable_1.look_at(new Phaser.Math.Vector3(2.0, 1.0, 2.3));
 
 		this.head_renderable_1.update();
 	}

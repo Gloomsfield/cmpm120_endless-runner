@@ -4,6 +4,8 @@ uniform mat4 projection_matrix;
 uniform mat4 view_matrix;
 uniform mat4 model_matrix;
 
+uniform float global_scale;
+
 attribute vec3 pos_attribute;
 attribute vec2 uv_attribute;
 
@@ -23,6 +25,6 @@ void main() {
 	unrotated_model_matrix[2] = retrieved_scale_z;
 	unrotated_model_matrix[3] = retrieved_translation;
 
-	gl_Position = projection_matrix * (view_matrix * (unrotated_model_matrix * vec4(pos_attribute, 1.0)));
+	gl_Position = projection_matrix * (view_matrix * (unrotated_model_matrix * vec4(pos_attribute * global_scale, 1.0)));
 }
 

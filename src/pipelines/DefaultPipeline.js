@@ -33,10 +33,7 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 			'projection_matrix': {
 				type: 'mat4',
 			},
-			'rotation_pivot': {
-				type: '3f',
-			},
-			'scale_s': {
+			'global_scale': {
 				type: '1f',
 			},
 		};

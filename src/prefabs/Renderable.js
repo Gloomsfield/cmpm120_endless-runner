@@ -13,7 +13,7 @@ let Renderable = new Phaser.Class({
 		Phaser.GameObjects.Components.Depth,
 	],
 
-	initialize: function Renderable(scene, pipeline_key, position, rotation) {
+	initialize: function Renderable(scene, pipeline_key) {
 		let texture_key = Phaser.Math.RND.uuid();
 
 		scene.textures.addDynamicTexture(texture_key, 64, 64);
@@ -27,15 +27,11 @@ let Renderable = new Phaser.Class({
 
 		this.initPipeline(pipeline_key);
 
-		this.model_matrix = new Phaser.Math.Matrix4().fromRotationTranslation(rotation, position);
+		this.model_matrix = new Phaser.Math.Matrix4();
 		this.view_matrix = new Phaser.Math.Matrix4();
 		this.projection_matrix = new Phaser.Math.Matrix4();
 
 		this.pipeline.setTexture2D(this.texture.getWebGLTexture());
-	},
-
-	set_model_matrix: function(model_matrix) {
-		this.model_matrix = model_matrix;
 	},
 
 	set_view_matrix: function(view_matrix) {
