@@ -71,6 +71,7 @@ class Object3D extends Renderable {
 		return forward;
 	}
 
+	// see references [2]
 	look_at(look_position) {
 		let forward = this.get_forward_vector();
 		let delta = new Phaser.Math.Vector3(look_position).subtract(this.world_pos);
