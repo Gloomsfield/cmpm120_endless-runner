@@ -20,12 +20,12 @@ class Game extends Phaser.Scene {
 
 		this.world.link_render_target(0, 0);
 
-		this.head_renderable = this.world.add_3d(
+		this.head_renderable_1 = this.world.add_3d(
 			{
 				object_class: PlayerHead,
 				config: {
 					position: new Phaser.Math.Vector3(0.0, 0.0, 5.5),
-					rotation: new Phaser.Math.Quaternion().identity(),
+					rotation: new Phaser.Math.Quaternion().identity().rotateY(Math.PI),
 					radius: 0.25,
 				}
 			}
@@ -33,16 +33,16 @@ class Game extends Phaser.Scene {
 			{
 				child_class: PlayerEye,
 				config: {
-					position: new Phaser.Math.Vector3(0.0, 0.0, 0.5),
-					rotation: new Phaser.Math.Quaternion().identity().rotateY(-0.25),
+					position: new Phaser.Math.Vector3(0.0, 0.0, 0.25),
+					rotation: new Phaser.Math.Quaternion().identity().rotateY(0.2),
 					scale: 0.5,
 				},
 			},
 			{
 				child_class: PlayerEye,
 				config: {
-					position: new Phaser.Math.Vector3(0.0, 0.0, 0.5),
-					rotation: new Phaser.Math.Quaternion().identity().rotateY(0.25),
+					position: new Phaser.Math.Vector3(0.0, 0.0, 0.25),
+					rotation: new Phaser.Math.Quaternion().identity().rotateY(-0.2),
 					scale: 0.5,
 				},
 			}
@@ -50,7 +50,9 @@ class Game extends Phaser.Scene {
 	}
 
 	update(time, delta) {
-		this.head_renderable.rotate(new Phaser.Math.Quaternion().identity().rotateY(delta / 1000.0));
-		this.head_renderable.update();
+		this.head_renderable_1.translate(new Phaser.Math.Vector3(delta / 1000 * Math.sin(time / 1000.0), delta / 1000 * Math.sin(time / 2000.0), 0.0));
+		this.head_renderable_1.look_at(new Phaser.Math.Vector3(0.0, 0.0, 0.0));
+
+		this.head_renderable_1.update();
 	}
 }

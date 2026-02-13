@@ -48,6 +48,23 @@ function dot_vector2(a, b) {
 	return a.x * b.x + a.y * b.y;
 }
 
+function align_vector3(a, b) {
+	let a_quat = new Phaser.Math.Quaternion(a.x, a.y, a.z, 0.0);
+	let b_quat = new Phaser.Math.Quaternion(b.x, b.y, b.z, 0.0);
+
+	let ab_quat = new Phaser.Math.Quaternion(a_quat).multiply(b_quat);
+
+	let q_quat_1 = new Phaser.Math.Quaternion(0.0, 0.0, 1.0, 0.0).normalize();
+	let q_quat_2 = new Phaser.Math.Quaternion(q_quat_1);
+
+	let bqa_quat = new Phaser.Math.Quaternion(b_quat).multiply(q_quat_2).multiply(a_quat);
+
+	q_quat_1.scale(ab_quat.length());
+	q_quat_1.subtract(bqa_quat).normalize();
+
+	return q_quat_1;
+}
+
 function fallback(x, fallback_value) {
 	if(x === undefined || x === null) {
 		return fallback_value;

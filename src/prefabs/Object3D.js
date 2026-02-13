@@ -27,13 +27,14 @@ class Object3D extends Renderable {
 	}
 
 	add_child(config) {
-		config.config.rotation_pivot = config.config.position.negate();
+		config.config.rotation_pivot = new Phaser.Math.Vector3(config.config.position);
 		config.config.position = new Phaser.Math.Vector3(this.position_v);
-		// config.config.position.add(config.config.rotation_pivot);
+		config.config.position.subtract(config.config.rotation_pivot);
 
 		let child = new config.child_class(this.scene, config.config);
 
 		child.rotate(config.config.rotation);
+		child.rotate(this.rotation_q);
 
 		this.children.push(child);
 
@@ -57,9 +58,28 @@ class Object3D extends Renderable {
 	}
 
 	rotate(rotation) {
-		this.rotation_q.multiply(rotation);
+		this.rotation_q.multiply(rotation).normalize();
 
 		this.propagate_transformation(0, rotation);
+	}
+
+	get_forward_vector() {
+		let forward = new Phaser.Math.Vector3(
+			0.0, 0.0, -1.0
+		).normalize();
+
+		return forward;
+	}
+
+	look_at(look_position) {
+		let forward = this.get_forward_vector();
+		let delta = new Phaser.Math.Vector3(look_position).subtract(this.world_pos);
+		
+		let q = align_vector3(forward, delta);
+
+		this.rotation_q = q;
+
+		this.propagate_transformation(0, q);
 	}
 
 	propagate_transformation(translation, rotation) {
@@ -69,18 +89,20 @@ class Object3D extends Renderable {
 			}
 
 			if(rotation !== 0) {
-				child.rotate(rotation);
+				//child.rotation_q = this.rotation_q;
 			}
 		}
 	}
 
 	update() {
-		let offset_position = this.position_v;
-		//offset_position.subtract(this.rotation_pivot);
-		this.model_matrix.fromRotationTranslation(this.rotation_q, offset_position);
-		this.model_matrix.translate(this.rotation_pivot);
+		this.model_matrix.fromRotationTranslation(this.rotation_q, this.position_v);
 
-		this.world_pos.setFromMatrixColumn(this.model_matrix, 3);
+		this.world_pos = new Phaser.Math.Vector3(this.position_v);
+		this.world_pos.add(this.rotation_pivot);
+
+		this.world_pos.transformMat4(this.model_matrix);
+
+		this.world_pos = new Phaser.Math.Vector3(this.world_pos).subtract(this.rotation_pivot);
 
 		for(let child of this.children) {
 			child.update();
