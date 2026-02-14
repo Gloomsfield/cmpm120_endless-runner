@@ -1,13 +1,11 @@
-const VALID_GEOMETRY_TYPES = [
-	'debug-orb',
-];
-
 class Scene3D extends Phaser.Scene {
 	constructor() {
 		super('scene-3d_scene');
 
 		this.cameras_3d = [];
 		this.render_targets = [];
+
+		world_3d = this;
 	}
 
 	// config
@@ -77,15 +75,21 @@ class Scene3D extends Phaser.Scene {
 			render_target.scene.register_renderable(new_object);
 		}
 
-		new_object.on('add-child', (child) => { this.add_3d_existing(child); })
+		new_object.on('add-child', (child) => { this.add_3d_existing(child); });
 
 		return new_object;
 	}
 
 	add_3d_existing(obj) {
+		while(obj.deferred_child_queue.length > 0) {
+			this.add_3d_existing(obj.deferred_child_queue.shift());
+		}
+
 		for(let render_target of this.render_targets) {
 			render_target.scene.register_renderable(obj);
 		}
+
+		obj.on('add-child', (child) => { this.add_3d_existing(child); });
 
 		return obj;
 	}

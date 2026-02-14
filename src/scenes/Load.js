@@ -9,7 +9,6 @@ class Load extends Phaser.Scene {
 
 		this.load.text('default_vertex', 'assets/shaders/default_vert.glsl');
 		this.load.text('billboard_vertex', 'assets/shaders/billboard_vert.glsl');
-		this.load.text('debug-orb_fragment', 'assets/shaders/debug-orb_frag.glsl');
 		this.load.text('eye_fragment', 'assets/shaders/eye_frag.glsl');
 		this.load.text('head_fragment', 'assets/shaders/head_frag.glsl');
 
@@ -19,7 +18,6 @@ class Load extends Phaser.Scene {
 		this.load.once('complete', () => {
 			this.textures.addDynamicTexture('eye_dynamic', 16, 16).draw('eye_texture');
 
-			game.renderer.pipelines.add('debug-orb_pipeline', new DebugOrbPipeline());
 			game.renderer.pipelines.add('eye_pipeline', new EyePipeline());
 			game.renderer.pipelines.add('head_pipeline', new HeadPipeline());
 

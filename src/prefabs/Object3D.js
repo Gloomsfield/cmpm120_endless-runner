@@ -9,6 +9,7 @@ class Object3D extends Renderable {
 		this.pipeline_key = pipeline_key;
 
 		this.children = [];
+		this.deferred_child_queue = [];
 
 		this.renderWebGL = config.shape_renderer;
 
@@ -49,9 +50,45 @@ class Object3D extends Renderable {
 		return this;
 	}
 
+	add_child_existing(child) {
+		child.parent_rotation = this.global_rotation;
+		child.parent_position = this.global_position;
+		child.parent_scale = this.parent_scale;
+
+		this.children.push(child);
+
+		this.emit('add-child', child);
+
+		return this;
+	}
+
+	add_child_deferred(config) {
+		let modified_config = config.config;
+
+		modified_config.parent_rotation = this.global_rotation;
+		modified_config.parent_position = this.global_position;
+		modified_config.parent_scale = this.global_scale;
+
+		let child = new config.object_class(this.scene, modified_config);
+
+		this.children.push(child);
+
+		this.deferred_child_queue.push(child);
+
+		return this;
+	}
+
 	add_children(child_configs) {
 		for(let child_config of child_configs) {
 			this.add_child(child_config);
+		}
+
+		return this;
+	}
+
+	add_children_existing(children) {
+		for(let child of child) {
+			this.add_child_existing(child);
 		}
 
 		return this;
