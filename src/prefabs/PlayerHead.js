@@ -30,3 +30,4 @@ class PlayerHead extends Object3D {
 		this.radius = config.radius;
 	}
 }
+
