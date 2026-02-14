@@ -48,7 +48,7 @@ class RenderTarget3D extends Phaser.Scene {
 		}
 
 		for(let [ i, { renderable, _ } ] of depth_sorted_renderables.entries()) {
-			renderable.setDepth(depth_sorted_renderables.length - i);
+			renderable.setDepth(i);
 			renderable.set_view_matrix(view_matrix);
 			renderable.set_projection_matrix(camera_projection_matrix);
 		}
