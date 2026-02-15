@@ -72,3 +72,60 @@ function render_quad(renderer, src, camera, parent_matrix) {
 	renderer.pipelines.postBatch(src);
 }
 
+function render_box(renderer, src, camera, parent_matrix) {
+	camera.addToRenderList(src, camera, parent_matrix);
+
+	let pipeline = renderer.pipelines.set(src.pipeline, src);
+
+	let vertices = [
+		{ x: -0.5, y: 0.5, z: -0.5 },
+		{ x: -0.5, y: -0.5, z: -0.5 },
+		{ x: 0.5, y: -0.5, z: -0.5 },
+		{ x: 0.5, y: 0.5, z: -0.5 },
+		{ x: -0.5, y: 0.5, z: 0.5 },
+		{ x: -0.5, y: -0.5, z: 0.5 },
+		{ x: 0.5, y: -0.5, z: 0.5 },
+		{ x: 0.5, y: 0.5, z: 0.5 },
+	];
+
+	let faces = [
+		[ 0, 1, 2, 0, 2, 3 ], // front
+		[ 4, 5, 1, 4, 1, 0 ], // left
+		[ 3, 2, 6, 3, 6, 7 ], // right
+		[ 4, 0, 3, 4, 3, 7 ], // top
+		[ 1, 2, 6, 1, 6, 5 ], // bottom
+		[ 7, 6, 5, 7, 5, 4 ], // back
+	];
+
+	for(let quad_index = 0; quad_index < 6; quad_index++) {
+		let v0 = vertices[faces[quad_index][0]];
+		let v1 = vertices[faces[quad_index][1]];
+		let v2 = vertices[faces[quad_index][2]];
+		let v3 = vertices[faces[quad_index][3]];
+		let v4 = vertices[faces[quad_index][4]];
+		let v5 = vertices[faces[quad_index][5]];
+
+		pipeline.batchAttributes(this, {
+			// ensure CCW winding order
+			'pos_attribute': [
+				v0.x, v0.y, v0.z,
+				v1.x, v1.y, v1.z,
+				v2.x, v2.y, v2.z,
+				v3.x, v3.y, v3.z,
+				v4.x, v4.y, v4.z,
+				v5.x, v5.y, v5.z,
+			],	
+			'uv_attribute': [
+				0.0, 0.0,
+				0.0, 1.0,
+				1.0, 1.0,
+				0.0, 0.0,
+				1.0, 1.0,
+				1.0, 0.0,
+			],
+		});
+		
+		renderer.pipelines.postBatch(src);
+	}
+}
+

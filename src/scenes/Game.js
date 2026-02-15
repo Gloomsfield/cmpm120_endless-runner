@@ -30,6 +30,8 @@ class Game extends Phaser.Scene {
 	}
 
 	update(time, delta) {
+		this.player.local_rotation = new Phaser.Math.Quaternion().identity().rotateY(time / 1000.0);
+
 		this.player.update();
 	}
 }
