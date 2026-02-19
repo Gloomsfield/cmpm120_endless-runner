@@ -13,6 +13,8 @@ class Load extends Phaser.Scene {
 		this.load.text('eye_fragment', 'assets/shaders/eye_frag.glsl');
 		this.load.text('head_fragment', 'assets/shaders/head_frag.glsl');
 		this.load.text('debug_fragment', 'assets/shaders/uv_frag.glsl');
+		this.load.text('wall_fragment', 'assets/shaders/wall_frag.glsl');
+		this.load.text('wall_vertex', 'assets/shaders/wall_vert.glsl');
 
 		this.load.image('eye_texture', 'assets/eye.png');
 		this.load.image('car_texture', 'assets/car.jpg');
@@ -23,6 +25,7 @@ class Load extends Phaser.Scene {
 			game.renderer.pipelines.add('eye_pipeline', new EyePipeline());
 			game.renderer.pipelines.add('head_pipeline', new HeadPipeline());
 			game.renderer.pipelines.add('box_pipeline', new BoxPipeline());
+			game.renderer.pipelines.add('wall_pipeline', new WallPipeline());
 
 			this.scene.start('game_scene');
 		});

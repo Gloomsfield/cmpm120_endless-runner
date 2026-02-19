@@ -1,3 +1,9 @@
+let player_global = null;
+
+function get_player_position() {
+	return player_global.global_position;
+}
+
 class Game extends Phaser.Scene {
 	constructor() {
 		super('game_scene');
@@ -21,18 +27,27 @@ class Game extends Phaser.Scene {
 		this.world.link_render_target(0, 0);
 
 		this.player = new Player(this, {
-			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 3.5),
-			local_rotation: new Phaser.Math.Quaternion().identity(),
+			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 13.25),
+			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(5.0 * Math.PI / 6.0),
 			local_scale: 1.0,
 		});
 
 		this.world.add_3d_existing(this.player);
+
+		player_global = this.player;
+
+		this.wall = new Wall(this, {
+			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 14.0),
+			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-Math.PI / 6.0),
+			local_scale: 30.0,
+		});
+
+		this.world.add_3d_existing(this.wall);
 	}
 
 	update(time, delta) {
-		this.player.local_rotation = new Phaser.Math.Quaternion().identity().rotateY(time / 1000.0);
-
 		this.player.update();
+		this.wall.update();
 	}
 }
 

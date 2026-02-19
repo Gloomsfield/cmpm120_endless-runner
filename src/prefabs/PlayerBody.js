@@ -10,8 +10,8 @@ class PlayerBody extends Object3D {
 		);
 
 		this.local_width = fallback(config.local_width, 1.0);
-		this.local_height = fallback(config.local_height, 0.5);
-		this.local_depth = fallback(config.local_depth, 0.5);
+		this.local_height = fallback(config.local_height, 1.5);
+		this.local_depth = fallback(config.local_depth, 0.35);
 
 		//this.left_arm = this.add_child_deferred({
 		//	object_class: PlayerArm,
