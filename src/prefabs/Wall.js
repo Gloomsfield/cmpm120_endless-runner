@@ -9,5 +9,11 @@ class Wall extends Object3D {
 		this.wall_color = new Phaser.Math.Vector3(0.8, 0.1, 0.0);
 		this.player_pos = get_player_position();
 	}
+
+	update(time, delta) {
+		this.player_pos = get_player_position();
+
+		super.update(time, delta);
+	}
 }
 
