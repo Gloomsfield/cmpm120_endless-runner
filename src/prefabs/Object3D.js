@@ -112,7 +112,7 @@ class Object3D extends Renderable {
 		this.local_rotation = q;
 	}
 
-	update() {
+	update(time, delta) {
 		this.global_scale = this.parent_scale * this.local_scale;
 		this.global_rotation = new Phaser.Math.Quaternion(this.parent_rotation).multiply(this.local_rotation);
 
@@ -128,7 +128,7 @@ class Object3D extends Renderable {
 			child.parent_rotation = this.global_rotation;
 			child.parent_scale = this.global_scale;
 
-			child.update();
+			child.update(time, delta);
 		}
 	}
 }

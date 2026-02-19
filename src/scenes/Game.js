@@ -46,8 +46,8 @@ class Game extends Phaser.Scene {
 	}
 
 	update(time, delta) {
-		this.player.update();
-		this.wall.update();
+		this.player.update(time, delta);
+		this.wall.update(time, delta);
 	}
 }
 
