@@ -19,7 +19,8 @@
 				];
 
 				shellHook = ''
-					alias gitclockout='git commit --allow-empty -m "clocking out"'
+					alias clockin='git commit --allow-empty -m "clock in"'
+					alias clockout='git commit --allow-empty -m "clock out"'
 				'';
 			};
 		};
