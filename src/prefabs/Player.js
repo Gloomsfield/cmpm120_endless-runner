@@ -30,7 +30,7 @@ class Player extends Object3D {
 	}
 
 	update(time, delta) {
-		this.parent_position.add(new Phaser.Math.Vector3(this.move_target).subtract(this.parent_position).scale(delta / 3500.0));
+		this.parent_position = new Phaser.Math.Vector3(this.move_target).subtract(this.parent_position.scale(delta / 3000.0));
 
 		super.update();
 	}

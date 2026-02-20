@@ -7,7 +7,7 @@ let camera_near = 1.0;
 
 function default_projection_matrix() {
 	let fov = 60 * (Math.PI / 180);
-	let aspect_ratio = 640.0 / 480.0;
+	let aspect_ratio = 400.0 / 300.0;
 
 	let f = 200.0;
 	let n = 1.0;
@@ -25,4 +25,8 @@ function default_projection_matrix() {
 }
 
 let camera_projection_matrix = default_projection_matrix();
+let inverse_camera_projection_matrix = default_projection_matrix().invert();
+
+const wall_rotation = Math.PI / 6.0;
+const mouse_z_multiplier = Math.tan(wall_rotation);
 
