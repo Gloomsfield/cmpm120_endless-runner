@@ -59,9 +59,9 @@ class Game extends Phaser.Scene {
 		this.world.add_3d_existing(this.wall);
 
 		this.face = new Face(this, {
-			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 13.75),
+			parent_position: new Phaser.Math.Vector3(0.0, 10.0, 13.75),
 			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-Math.PI / 6.0),
-			local_scale: 5.0,
+			local_scale: 7.5,
 		});
 
 		this.world.add_3d_existing(this.face);

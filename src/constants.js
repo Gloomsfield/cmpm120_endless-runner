@@ -30,3 +30,5 @@ let inverse_camera_projection_matrix = default_projection_matrix().invert();
 const wall_rotation = Math.PI / 6.0;
 const mouse_z_multiplier = Math.tan(wall_rotation);
 
+const ascent_pace = 2.5;
+

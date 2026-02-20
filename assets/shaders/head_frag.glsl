@@ -22,6 +22,6 @@ void main() {
 	color = floor(color * 7.5) / 7.0;
 
 
-	gl_FragColor = vec4(color, color, color, color);
+	gl_FragColor = vec4(color, color, color, 1.0);
 }
 
