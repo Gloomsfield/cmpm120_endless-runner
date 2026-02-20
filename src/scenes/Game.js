@@ -47,17 +47,15 @@ class Game extends Phaser.Scene {
 
 	update(time, delta) {
 		let inverse_view_projection_matrix = new Phaser.Math.Matrix4(
-		//	camera_projection_matrix
-		//).multiply(
 			this.world.cameras_3d[0].view_matrix
 		).invert();
 
 		let mouse_x = (this.input.activePointer.x / 400.0 - 0.5) * 2.0;
-		let mouse_y = (this.input.activePointer.y / 300) * 2.0 - 1.0;
+		let mouse_y = 1.0 - (this.input.activePointer.y / 300) * 2.0;
 
 		let clipspace_pos_vec4 = new Phaser.Math.Vector4(
 			mouse_x,
-			this.input.activePointer.y * 0.0,
+			mouse_y,
 			-1.0,
 			1.0
 		).transformMat4(inverse_view_projection_matrix);
@@ -73,7 +71,6 @@ class Game extends Phaser.Scene {
 		);
 
 		let phi_x = Math.atan(0.75 * clipspace_pos.x);
-
 		let x = 14.0 * (0.75 * clipspace_pos.x) * (1.0 + Math.sin(phi_x) * Math.sin(Math.PI / 6.0) / Math.cos(phi_x + (Math.PI / 6.0)));
 
 		let target_pos = new Phaser.Math.Vector3(
@@ -83,6 +80,7 @@ class Game extends Phaser.Scene {
 		);
 
 		target_pos.z = mouse_z_multiplier * target_pos.x + 13.25;
+		target_pos.y = Math.sqrt(x * x + target_pos.z * target_pos.z) * clipspace_pos.y * 0.5;
 
 		this.player.set_move_target(target_pos);
 
