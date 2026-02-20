@@ -10,6 +10,20 @@ class Game extends Phaser.Scene {
 	}
 
 	create() {
+		this.anims.create({
+			key: 'face_idle',
+			frames: this.anims.generateFrameNumbers('face_sheet', { frames: [ 0 ] }),
+			frameRate: 12,
+			repeat: 0,
+		});
+
+		this.anims.create({
+			key: 'face_awaken',
+			frames: this.anims.generateFrameNumbers('face_sheet', { frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] }),
+			frameRate: 12,
+			repeat: -1,
+		});
+
 		this.scene.launch('scene-3d_scene');
 		this.world = this.scene.get('scene-3d_scene');
 
@@ -43,6 +57,14 @@ class Game extends Phaser.Scene {
 		});
 
 		this.world.add_3d_existing(this.wall);
+
+		this.face = new Face(this, {
+			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 13.75),
+			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-Math.PI / 6.0),
+			local_scale: 5.0,
+		});
+
+		this.world.add_3d_existing(this.face);
 	}
 
 	update(time, delta) {
@@ -59,8 +81,6 @@ class Game extends Phaser.Scene {
 			-1.0,
 			1.0
 		).transformMat4(inverse_view_projection_matrix);
-
-		console.log(clipspace_pos_vec4.x);
 
 		let w = clipspace_pos_vec4.w;
 
@@ -86,6 +106,7 @@ class Game extends Phaser.Scene {
 
 		this.player.update(time, delta);
 		this.wall.update(time, delta);
+		this.face.update(time, delta);
 	}
 }
 
