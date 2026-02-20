@@ -8,9 +8,10 @@ class Face extends Object3D {
 
 		this.scene = scene;
 
-		this.face_texture = scene.add.image(-128, -128, 'face_sheet', 1);
+		this.face_texture = scene.add.image(-128, -128, 'face_sheet', 0);
 
 		this.face_sampler2D = this.face_texture.texture.frames[0].glTexture;
+		this.player_pos = get_player_position();
 
 		this.index_mod = 1;
 		this.index_offset = 0;
@@ -21,6 +22,8 @@ class Face extends Object3D {
 	}
 
 	update(time, delta) {
+		this.player_pos = get_player_position();
+
 		let animation_index = Math.floor((time - this.awaken_timestamp) / 100 % this.index_mod) + this.index_offset;
 
 		this.face_texture.setTexture(`face_${animation_index}_texture`);
@@ -44,6 +47,12 @@ class Face extends Object3D {
 		this.index_mod = 10;
 		this.index_offset = 1;
 		this.awaken_timestamp = time;
+	}
+
+	reset() {
+		this.index_mod = 1;
+		this.index_offset = 0;
+		this.awaken_timestamp = 0;
 	}
 }
 

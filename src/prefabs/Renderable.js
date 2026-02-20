@@ -48,15 +48,18 @@ function render_quad(renderer, src, camera, parent_matrix) {
 
 	let pipeline = renderer.pipelines.set(src.pipeline, src);
 
+	let src_width = fallback(src.quad_width, 1.0);
+	let src_height = fallback(src.quad_height, 1.0);
+
 	pipeline.batchAttributes(this,
 		{
 			'pos_attribute': [
-				-0.5, 0.5, 0.0,
-				-0.5, -0.5, 0.0,
-				0.5, -0.5, 0.0,
-				-0.5, 0.5, 0.0,
-				0.5, -0.5, 0.0,
-				0.5, 0.5, 0.0,
+				-src_width / 2.0, src_height / 2.0, 0.0,
+				-src_width / 2.0, -src_height / 2.0, 0.0,
+				src_width / 2.0, -src_height / 2.0, 0.0,
+				-src_width / 2.0, src_height / 2.0, 0.0,
+				src_width / 2.0, -src_height / 2.0, 0.0,
+				src_width / 2.0, src_height / 2.0, 0.0,
 			],
 			'uv_attribute': [
 				0.0, 0.0,

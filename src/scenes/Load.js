@@ -11,7 +11,9 @@ class Load extends Phaser.Scene {
 		this.load.text('billboard_vertex', 'assets/shaders/billboard_vert.glsl');
 		this.load.text('box_vertex', 'assets/shaders/box_vert.glsl');
 		this.load.text('face_fragment', 'assets/shaders/face_frag.glsl');
+		this.load.text('face_vertex', 'assets/shaders/face_vert.glsl');
 		this.load.text('eye_fragment', 'assets/shaders/eye_frag.glsl');
+		this.load.text('arm_fragment', 'assets/shaders/arm_frag.glsl');
 		this.load.text('head_fragment', 'assets/shaders/head_frag.glsl');
 		this.load.text('debug_fragment', 'assets/shaders/uv_frag.glsl');
 		this.load.text('wall_fragment', 'assets/shaders/wall_frag.glsl');
@@ -23,15 +25,15 @@ class Load extends Phaser.Scene {
 			this.load.image(`face_${i}_texture`, `assets/obstacles/doctorchomp-${i + 1}.png`);
 		}
 
-		console.log(this.textures.get('face_sheet'))
-
 		this.load.image('eye_texture', 'assets/eye.png');
+		this.load.image('arm_texture', 'assets/arm.png');
 		this.load.image('car_texture', 'assets/car.jpg');
 
 		this.load.once('complete', () => {
 			this.textures.addDynamicTexture('eye_dynamic', 16, 16).draw('eye_texture');
 
 			game.renderer.pipelines.add('eye_pipeline', new EyePipeline());
+			game.renderer.pipelines.add('arm_pipeline', new ArmPipeline());
 			game.renderer.pipelines.add('face_pipeline', new FacePipeline());
 			game.renderer.pipelines.add('head_pipeline', new HeadPipeline());
 			game.renderer.pipelines.add('box_pipeline', new BoxPipeline());

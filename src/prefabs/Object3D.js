@@ -75,7 +75,7 @@ class Object3D extends Renderable {
 
 		this.deferred_child_queue.push(child);
 
-		return this;
+		return child;
 	}
 
 	add_children(child_configs) {

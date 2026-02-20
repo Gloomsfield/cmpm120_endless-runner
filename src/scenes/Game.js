@@ -10,20 +10,6 @@ class Game extends Phaser.Scene {
 	}
 
 	create() {
-		this.anims.create({
-			key: 'face_idle',
-			frames: this.anims.generateFrameNumbers('face_sheet', { frames: [ 0 ] }),
-			frameRate: 12,
-			repeat: 0,
-		});
-
-		this.anims.create({
-			key: 'face_awaken',
-			frames: this.anims.generateFrameNumbers('face_sheet', { frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] }),
-			frameRate: 12,
-			repeat: -1,
-		});
-
 		this.scene.launch('scene-3d_scene');
 		this.world = this.scene.get('scene-3d_scene');
 
@@ -42,7 +28,7 @@ class Game extends Phaser.Scene {
 
 		this.player = new Player(this, {
 			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 13.25),
-			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(5.0 * Math.PI / 6.0),
+			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(Math.PI - wall_rotation),
 			local_scale: 1.0,
 		});
 
@@ -52,19 +38,29 @@ class Game extends Phaser.Scene {
 
 		this.wall = new Wall(this, {
 			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 14.0),
-			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-Math.PI / 6.0),
-			local_scale: 30.0,
+			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-wall_rotation),
+			local_scale: 50.0,
 		});
 
 		this.world.add_3d_existing(this.wall);
 
 		this.face = new Face(this, {
-			parent_position: new Phaser.Math.Vector3(0.0, 10.0, 13.75),
-			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-Math.PI / 6.0),
+			parent_position: new Phaser.Math.Vector3(0.0, 10.0, 13.95),
+			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-wall_rotation),
 			local_scale: 7.5,
 		});
 
 		this.world.add_3d_existing(this.face);
+	}
+
+	align_with_wall(unaligned_vector, wall_x) {
+		let x = (wall_x) * Math.cos(wall_rotation);
+		let z = (wall_x) * Math.sin(wall_rotation) + 13.95;
+
+		console.log(x);
+		console.log(z);
+
+		return new Phaser.Math.Vector3(x, unaligned_vector.y, z);
 	}
 
 	update(time, delta) {
@@ -91,7 +87,7 @@ class Game extends Phaser.Scene {
 		);
 
 		let phi_x = Math.atan(0.75 * clipspace_pos.x);
-		let x = 14.0 * (0.75 * clipspace_pos.x) * (1.0 + Math.sin(phi_x) * Math.sin(Math.PI / 6.0) / Math.cos(phi_x + (Math.PI / 6.0)));
+		let x = 14.0 * (0.75 * clipspace_pos.x) * (1.0 + Math.sin(phi_x) * Math.sin(wall_rotation) / Math.cos(phi_x + (wall_rotation)));
 
 		let target_pos = new Phaser.Math.Vector3(
 			x,
@@ -107,6 +103,13 @@ class Game extends Phaser.Scene {
 		this.player.update(time, delta);
 		this.wall.update(time, delta);
 		this.face.update(time, delta);
+
+		if(this.face.global_position.y < -12.5) {
+			this.face.reset();
+
+			this.face.parent_position = this.align_with_wall(this.face.global_position, -3.5);
+			this.face.parent_position.y = 12.5;
+		}
 	}
 }
 

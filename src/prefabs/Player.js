@@ -11,7 +11,7 @@ class Player extends Object3D {
 				local_position: new Phaser.Math.Vector3(0.0, -0.5 + 1.0, 0.0),
 				local_rotation: new Phaser.Math.Quaternion().identity(),
 				radius: 0.25,
-			}
+			},
 		});
 
 		this.move_target = new Phaser.Math.Vector3(0.0, 0.0, 0.0);
@@ -21,7 +21,7 @@ class Player extends Object3D {
 			config: {
 				local_position: new Phaser.Math.Vector3(0.0, -1.75 + 1.0, 0.0),
 				local_rotation: new Phaser.Math.Quaternion().identity().rotateY(Math.PI / 1.0),
-			}
+			},
 		});
 	}
 
@@ -35,10 +35,11 @@ class Player extends Object3D {
 
 		if(move_direction_magnitude > 0.1) {
 			move_direction.normalize();
+			move_direction.subtract(new Phaser.Math.Vector3(0.0, 0.25, 0.0));
 			this.parent_position.add(move_direction.scale(delta / 200.0));
 		}
 
-		super.update();
+		super.update(time, delta);
 	}
 }
 

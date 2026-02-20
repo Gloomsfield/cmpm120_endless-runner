@@ -1,29 +1,27 @@
-class FacePipeline extends DefaultPipeline {
+class ArmPipeline extends DefaultPipeline {
 	constructor() {
 		let attributes = {
 			'pos_attribute': {
-				size: 3,
+				size: 3
 			},
 			'uv_attribute': {
-				size: 2,
+				size: 2
 			},
 		};
 
 		let uniforms = {
-			'face_sampler2D': {
+			'arm_sampler2D': {
 				type: 'sampler2D',
-			},
-			'player_pos': {
-				type: '3f',
 			},
 		};
 
 		super(
-			'face_pipeline',
-			'face_vertex',
-			'face_fragment',
+			'arm_pipeline',
+			'default_vertex',
+			'arm_fragment',
 			attributes,
 			uniforms
 		);
 	}
 }
+
