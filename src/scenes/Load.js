@@ -39,7 +39,7 @@ class Load extends Phaser.Scene {
 			game.renderer.pipelines.add('box_pipeline', new BoxPipeline());
 			game.renderer.pipelines.add('wall_pipeline', new WallPipeline());
 
-			this.scene.start('game_scene');
+			this.scene.start('start_scene');
 		});
 	}
 }

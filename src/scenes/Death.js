@@ -11,19 +11,22 @@ class Death extends Phaser.Scene {
 				you fall backwards,
 				cast once again into
 				the depths of hell...
-			`
+			`,
+			default_text_style
 		).setOrigin(1.0, 1.0).setAlpha(0.0);
 
 		this.score_text = this.add.text(
 			this.cameras.main.width / 2.0,
 			this.cameras.main.height / 2.0,
-			`you climbed ${Math.floor(height)} yards.`
+			`you climbed ${Math.floor(height)} yards.`,
+			default_text_style
 		).setOrigin(0.5, 0.5).setAlpha(0.0);
 
 		this.replay_text = this.add.text(
 			this.cameras.main.width / 2.0,
 			this.cameras.main.height / 2.0 + 15.0,
-			`click to ascend once more.`
+			`click to ascend once more.`,
+			default_text_style
 		).setOrigin(0.5, 0.5).setAlpha(0.0);
 
 		this.fadeout = false;
@@ -47,6 +50,7 @@ class Death extends Phaser.Scene {
 				this.fadeout = true;
 
 				this.input.on('pointerdown', () => {
+					height = 0.0;
 					this.scene.start('game_scene');
 				});
 			},
