@@ -44,6 +44,12 @@ class Game extends Phaser.Scene {
 			callbackScope: this,
 			loop: true,
 		});
+
+		this.music = this.sound.add('sisyphus_audio', {
+			loop: true,
+			volume: 0.5,
+		});
+		this.music.play();
 	}
 
 	align_with_wall(unaligned_vector, wall_x) {
@@ -63,6 +69,8 @@ class Game extends Phaser.Scene {
 		obstacle.update(0, 16);
 
 		obstacle.on('collide_player', () => {
+			this.music.stop();
+
 			this.player.die();
 
 			this.scene.launch('death_scene');

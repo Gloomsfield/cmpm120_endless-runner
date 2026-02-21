@@ -30,6 +30,8 @@ class Load extends Phaser.Scene {
 		this.load.audio('scream-2_audio', 'assets/audio/scream-2.mp3');
 		this.load.audio('scream-3_audio', 'assets/audio/scream-3.mp3');
 
+		this.load.audio('sisyphus_audio', 'assets/audio/sisyphus.wav');
+
 		this.load.image('eye_texture', 'assets/eye.png');
 		this.load.image('arm_texture', 'assets/arm.png');
 		this.load.image('car_texture', 'assets/car.jpg');
