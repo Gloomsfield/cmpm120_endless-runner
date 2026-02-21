@@ -44,13 +44,11 @@ class Game extends Phaser.Scene {
 
 		this.world.add_3d_existing(this.wall);
 
-		this.face = new Face(this, {
+		this.face = this.spawn_obstacle(Face, {
 			parent_position: new Phaser.Math.Vector3(0.0, 10.0, 13.95),
 			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-wall_rotation),
 			local_scale: 7.5,
 		});
-
-		this.world.add_3d_existing(this.face);
 	}
 
 	align_with_wall(unaligned_vector, wall_x) {
@@ -63,7 +61,23 @@ class Game extends Phaser.Scene {
 		return new Phaser.Math.Vector3(x, unaligned_vector.y, z);
 	}
 
+	spawn_obstacle(obstacle_class, obstacle_config) {
+		let obstacle = new obstacle_class(this, obstacle_config);
+
+		obstacle.on('collide_player', () => {
+			this.player.die();
+
+			this.scene.launch('death_scene');
+		});
+
+		this.world.add_3d_existing(obstacle);
+
+		return obstacle;
+	}
+
 	update(time, delta) {
+		height += delta / 1000.0;
+
 		let inverse_view_projection_matrix = new Phaser.Math.Matrix4(
 			this.world.cameras_3d[0].view_matrix
 		).invert();

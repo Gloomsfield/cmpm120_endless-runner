@@ -32,6 +32,8 @@ class Player extends Object3D {
 	die() {
 		this.is_dying = true;
 		this.death_time = this.time;
+
+		this.emit('dead');
 	}
 
 	update(time, delta) {
@@ -54,8 +56,6 @@ class Player extends Object3D {
 			move_direction.normalize();
 			move_direction.subtract(new Phaser.Math.Vector3(0.0, 0.25, 0.0));
 			this.parent_position.add(move_direction.scale(delta / 200.0));
-		} else {
-			this.die();
 		}
 	}
 }

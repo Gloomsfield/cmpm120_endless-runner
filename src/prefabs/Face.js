@@ -38,8 +38,14 @@ class Face extends Object3D {
 			this.index_offset = 8;
 		}
 
-		if(this.global_position.distance(get_player_position()) < 2.5 && this.awaken_timestamp < 1) {
-			this.awaken(time);
+		if(this.global_position.distance(get_player_position()) < 2.5) {
+			if(this.awaken_timestamp < 1) {
+				this.awaken(time);
+			}
+
+			if(animation_index > 2 && this.global_position.y - get_player_position().y > 0.25) {
+				this.emit('collide_player');
+			}
 		}
 	}
 

@@ -16,7 +16,7 @@ let phaser_config = {
 	},
 	antialias: false,
 	roundPixels: true,
-	scene: [ Load, Game, RenderTarget3D, Scene3D ],
+	scene: [ Load, Game, RenderTarget3D, Scene3D, Death ],
 };
 
 let game = new Phaser.Game(phaser_config);
