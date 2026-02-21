@@ -31,6 +31,7 @@ class Death extends Phaser.Scene {
 		this.time.addEvent({
 			delay: 2000.0,
 			callback: () => {
+				this.scene.stop('game_scene');
 				this.fadein = true;
 			},
 			callbackScope: this,
@@ -38,7 +39,7 @@ class Death extends Phaser.Scene {
 		});
 
 		this.time.addEvent({
-			delay: 5500.0,
+			delay: 5000.0,
 			callback: () => {
 				this.fadein = false;
 				this.fadeout = true;
