@@ -50,6 +50,8 @@ class Game extends Phaser.Scene {
 			volume: 0.5,
 		});
 		this.music.play();
+
+		player_light_radius = 0.0;
 	}
 
 	align_with_wall(unaligned_vector, wall_x) {
