@@ -36,6 +36,12 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 			'global_scale': {
 				type: '1f',
 			},
+			'player_pos': {
+				type: '3f',
+			},
+			'player_light_radius': {
+				type: '1f',
+			},
 		};
 		Object.assign(this.uniforms, uniforms);
 	}
@@ -44,6 +50,12 @@ class DefaultPipeline extends Phaser.Renderer.WebGL.WebGLPipeline {
 		if(gameobject) {
 			for(let [ key, value ] of Object.entries(this.uniforms)) {
 				if(!(Object.keys(gameobject).includes(key))) {
+					if(key == 'player_pos') {
+						this.set3f(key, get_player_position().x, get_player_position().y, get_player_position().z);
+					} else if(key == 'player_light_radius') {
+						this.set1f(key, player_light_radius);
+					}
+
 					continue;
 				}
 

@@ -63,6 +63,8 @@ class Game extends Phaser.Scene {
 	}
 
 	update(time, delta) {
+		player_light_radius += ((player_base_light_radius + 0.25 * Math.sin(time / 1000.0)) - player_light_radius) * delta / 1000.0;
+
 		height += delta / 1000.0;
 
 		let inverse_view_projection_matrix = new Phaser.Math.Matrix4(
