@@ -23,6 +23,9 @@ class Player extends Object3D {
 				local_rotation: new Phaser.Math.Quaternion().identity().rotateY(Math.PI / 1.0),
 			},
 		});
+
+		this.climb_1_audio = scene.sound.add('climb-1_audio', { loop: true, });
+		this.climb_1_audio.play();
 	}
 
 	set_move_target(target_pos) {
@@ -42,6 +45,8 @@ class Player extends Object3D {
 		super.update(time, delta);
 
 		if(this.is_dying) {
+			this.climb_1_audio.stop();
+
 			this.local_rotation.rotateX(delta / 200.0);
 			this.parent_position.y -= (delta / 50.0) * Math.pow(this.time / 1000.0 - this.death_time / 1000.0, 2.0);
 			this.parent_position.z -= Math.cos(wall_rotation) * delta / 1000.0 * 5.0;

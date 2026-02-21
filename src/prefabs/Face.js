@@ -19,6 +19,12 @@ class Face extends Object3D {
 
 		this.face_texture.setTexture(`face_${animation_index}_texture`);
 		this.face_sampler2D = this.face_texture.texture.source[0].glTexture;
+
+		let scream_1_audio = scene.sound.add('scream-1_audio', { loop: false, });
+		let scream_2_audio = scene.sound.add('scream-2_audio', { loop: false, });
+		let scream_3_audio = scene.sound.add('scream-3_audio', { loop: false, });
+
+		this.screams = [ scream_1_audio, scream_2_audio, scream_3_audio ];
 	}
 
 	update(time, delta) {
@@ -41,6 +47,8 @@ class Face extends Object3D {
 		if(this.global_position.distance(get_player_position()) < 2.5) {
 			if(this.awaken_timestamp < 1) {
 				this.awaken(time);
+				
+				this.screams[Phaser.Math.RND.integerInRange(0, 2)].play();
 			}
 
 			if(animation_index > 2 && this.global_position.y - get_player_position().y > 0.25) {
