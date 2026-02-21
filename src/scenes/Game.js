@@ -13,19 +13,6 @@ class Game extends Phaser.Scene {
 		this.scene.launch('scene-3d_scene');
 		this.world = this.scene.get('scene-3d_scene');
 
-		this.world.add_camera({
-			camera_index: 0,
-			target_index: 0,
-			position: { x: 0, y: 0, z: 0 },
-			look: { x: 0, y: 0, z: -1 },
-			up: { x: 0, y: 1, z: 0 },
-			right: { x: 1, y: 0, z: 0 },
-		});
-
-		this.view = this.world.add_render_target({ x: 0, y: 0, width: 640, height: 480 });
-
-		this.world.link_render_target(0, 0);
-
 		this.player = new Player(this, {
 			parent_position: new Phaser.Math.Vector3(0.0, 0.0, 13.25),
 			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(Math.PI - wall_rotation),
@@ -79,7 +66,7 @@ class Game extends Phaser.Scene {
 		height += delta / 1000.0;
 
 		let inverse_view_projection_matrix = new Phaser.Math.Matrix4(
-			this.world.cameras_3d[0].view_matrix
+			this.world.camera_3d.view_matrix
 		).invert();
 
 		let mouse_x = (this.input.activePointer.x / 400.0 - 0.5) * 2.0;

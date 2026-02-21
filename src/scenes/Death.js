@@ -32,6 +32,8 @@ class Death extends Phaser.Scene {
 			delay: 2000.0,
 			callback: () => {
 				this.scene.stop('game_scene');
+				this.scene.stop('scene-3d_scene');
+				this.scene.stop('render-target-3d_scene');
 				this.fadein = true;
 			},
 			callbackScope: this,
@@ -43,6 +45,10 @@ class Death extends Phaser.Scene {
 			callback: () => {
 				this.fadein = false;
 				this.fadeout = true;
+
+				this.input.on('pointerdown', () => {
+					this.scene.start('game_scene');
+				});
 			},
 			callbackScope: this,
 			loop: false,

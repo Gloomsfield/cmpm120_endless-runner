@@ -1,6 +1,6 @@
 class RenderTarget3D extends Phaser.Scene {
-	constructor(scene_key) {
-		super(scene_key);
+	constructor() {
+		super('render-target-3d_scene');
 
 		this.renderables = [ ];
 	}
@@ -52,9 +52,5 @@ class RenderTarget3D extends Phaser.Scene {
 			renderable.set_view_matrix(view_matrix);
 			renderable.set_projection_matrix(camera_projection_matrix);
 		}
-	}
-
-	update() {
-
 	}
 }
