@@ -5,6 +5,12 @@ class RenderTarget3D extends Phaser.Scene {
 		this.renderables = [ ];
 	}
 
+	create() {
+		this.events.on('shutdown', () => {
+			this.renderables = [ ];
+		});
+	}
+
 	register_renderable(renderable) {
 		this.renderables.push(renderable);
 	}
@@ -14,6 +20,12 @@ class RenderTarget3D extends Phaser.Scene {
 
 		if(i > -1) {
 			this.renderables.splice(i, 1);
+		}
+	}
+
+	update(time, delta) {
+		for(let renderable of this.renderables) {
+			renderable.update(time, delta);
 		}
 	}
 

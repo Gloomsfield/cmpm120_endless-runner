@@ -31,10 +31,18 @@ class Game extends Phaser.Scene {
 
 		this.world.add_3d_existing(this.wall);
 
-		this.face = this.spawn_obstacle(Face, {
-			parent_position: new Phaser.Math.Vector3(0.0, 10.0, 13.95),
-			local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-wall_rotation),
-			local_scale: 7.5,
+		this.time.addEvent({
+			delay: 2500.0,
+			callback: () => {
+				let new_face_spawn_pos = this.align_with_wall(new Phaser.Math.Vector3(0.0, 15.0, 0.0), Phaser.Math.RND.between(-7.5, 12.0));
+				this.spawn_obstacle(Face, {
+					parent_position: new_face_spawn_pos,
+					local_rotation: new Phaser.Math.Quaternion().identity().rotateY(-wall_rotation),
+					local_scale: 7.5,
+				});
+			},
+			callbackScope: this,
+			loop: true,
 		});
 	}
 
@@ -42,14 +50,17 @@ class Game extends Phaser.Scene {
 		let x = (wall_x) * Math.cos(wall_rotation);
 		let z = (wall_x) * Math.sin(wall_rotation) + 13.95;
 
-		console.log(x);
-		console.log(z);
-
 		return new Phaser.Math.Vector3(x, unaligned_vector.y, z);
 	}
 
 	spawn_obstacle(obstacle_class, obstacle_config) {
 		let obstacle = new obstacle_class(this, obstacle_config);
+		this.world.add_3d_existing(obstacle);
+
+		// this is a hack to stop obstacles from
+		// flickering for a single frame on spawn.
+		// look into a better way to do this.
+		obstacle.update(0, 16);
 
 		obstacle.on('collide_player', () => {
 			this.player.die();
@@ -57,7 +68,11 @@ class Game extends Phaser.Scene {
 			this.scene.launch('death_scene');
 		});
 
-		this.world.add_3d_existing(obstacle);
+		obstacle.on('despawn', () => {
+			this.world.remove_3d(obstacle);
+
+			obstacle.destroy();
+		});
 
 		return obstacle;
 	}
@@ -102,17 +117,6 @@ class Game extends Phaser.Scene {
 		target_pos.y = Math.sqrt(x * x + target_pos.z * target_pos.z) * clipspace_pos.y * 0.5;
 
 		this.player.set_move_target(target_pos);
-
-		this.player.update(time, delta);
-		this.wall.update(time, delta);
-		this.face.update(time, delta);
-
-		if(this.face.global_position.y < -12.5) {
-			this.face.reset();
-
-			this.face.parent_position = this.align_with_wall(this.face.global_position, -3.5);
-			this.face.parent_position.y = 12.5;
-		}
 	}
 }
 

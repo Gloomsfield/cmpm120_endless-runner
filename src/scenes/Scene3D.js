@@ -38,6 +38,10 @@ class Scene3D extends Phaser.Scene {
 		return obj;
 	}
 
+	remove_3d(obj) {
+		this.scene.get('render-target-3d_scene').unregister_renderable(obj);
+	}
+
 	update() {
 		this.scene.get('render-target-3d_scene').render_scene(
 			this.camera_3d.view_matrix

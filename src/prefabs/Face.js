@@ -8,17 +8,17 @@ class Face extends Object3D {
 
 		this.scene = scene;
 
-		this.face_texture = scene.add.image(-128, -128, 'face_sheet', 0);
-
-		this.face_sampler2D = this.face_texture.texture.frames[0].glTexture;
-		this.player_pos = get_player_position();
+		this.face_texture = scene.add.image(-512, -512);
 
 		this.index_mod = 1;
 		this.index_offset = 0;
 
 		this.awaken_timestamp = 0;
 
-		this.animation_index = 0;
+		let animation_index = this.index_offset;
+
+		this.face_texture.setTexture(`face_${animation_index}_texture`);
+		this.face_sampler2D = this.face_texture.texture.source[0].glTexture;
 	}
 
 	update(time, delta) {
@@ -46,6 +46,10 @@ class Face extends Object3D {
 			if(animation_index > 2 && this.global_position.y - get_player_position().y > 0.25) {
 				this.emit('collide_player');
 			}
+		}
+
+		if(this.global_position.y < -12.5) {
+			this.emit('despawn');
 		}
 	}
 

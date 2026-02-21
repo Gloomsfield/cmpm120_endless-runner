@@ -32,6 +32,8 @@ let Renderable = new Phaser.Class({
 		this.projection_matrix = new Phaser.Math.Matrix4();
 
 		this.pipeline.setTexture2D(this.texture.getWebGLTexture());
+
+		scene.add.existing(this);
 	},
 
 	set_view_matrix: function(view_matrix) {
